@@ -1,0 +1,93 @@
+@model Client
+@using Sabara.Web.ViewModel
+@{
+    var users = ViewBag.AssignableUsers as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+}
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+    <div>
+        <label asp-for="Name" class="block text-sm font-bold text-brand-ink mb-2"></label>
+        <input asp-for="Name"
+               class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition" />
+        <span asp-validation-for="Name" class="text-red-600 text-xs font-semibold mt-1 block"></span>
+    </div>
+
+    <div>
+        <label asp-for="CompanyName" class="block text-sm font-bold text-brand-ink mb-2"></label>
+        <input asp-for="CompanyName"
+               class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition" />
+    </div>
+
+    <div>
+        <label asp-for="PhoneNumber" class="block text-sm font-bold text-brand-ink mb-2"></label>
+        <input asp-for="PhoneNumber" dir="ltr"
+               class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition ltr-text" />
+        <span asp-validation-for="PhoneNumber" class="text-red-600 text-xs font-semibold mt-1 block"></span>
+    </div>
+
+    <div>
+        <label asp-for="Email" class="block text-sm font-bold text-brand-ink mb-2"></label>
+        <input asp-for="Email" type="email" dir="ltr"
+               class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition ltr-text" />
+        <span asp-validation-for="Email" class="text-red-600 text-xs font-semibold mt-1 block"></span>
+    </div>
+
+    <div>
+        <label asp-for="City" class="block text-sm font-bold text-brand-ink mb-2"></label>
+        <input asp-for="City"
+               class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition" />
+    </div>
+
+    <div>
+        <label asp-for="Source" class="block text-sm font-bold text-brand-ink mb-2"></label>
+        <select asp-for="Source"
+                class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition">
+            @foreach (ClientSource s in Enum.GetValues<ClientSource>())
+            {
+                <option value="@s" selected="@(Model.Source == s)">@s.Label()</option>
+            }
+        </select>
+    </div>
+
+    <div class="md:col-span-2">
+        <label asp-for="Status" class="block text-sm font-bold text-brand-ink mb-2"></label>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            @foreach (ClientStatus st in Enum.GetValues<ClientStatus>())
+            {
+                var (bg, txt) = st.Colors();
+                <label class="cursor-pointer relative">
+                    <input type="radio" asp-for="Status" value="@st" class="peer sr-only" />
+                    <div class="p-3 rounded-xl border-2 border-brand-surface bg-white peer-checked:border-brand-gold peer-checked:bg-brand-gold/10 transition text-center">
+                        <div class="inline-flex items-center justify-center w-10 h-10 rounded-full @bg @txt mb-2">
+                            @if (st == ClientStatus.Lead) { <i class="bi bi-stars"></i> }
+                            else if (st == ClientStatus.Active) { <i class="bi bi-check-circle-fill"></i> }
+                            else if (st == ClientStatus.Inactive) { <i class="bi bi-pause-circle-fill"></i> }
+                            else { <i class="bi bi-x-circle-fill"></i> }
+                        </div>
+                        <div class="text-sm font-bold text-brand-ink">@st.Label()</div>
+                    </div>
+                </label>
+            }
+        </div>
+    </div>
+
+    <div class="md:col-span-2">
+        <label asp-for="AssignedToUserId" class="block text-sm font-bold text-brand-ink mb-2"></label>
+        <select asp-for="AssignedToUserId"
+                class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition">
+            <option value="">— غير محدد —</option>
+            @foreach (var u in users)
+            {
+                <option value="@u.Id" selected="@(Model.AssignedToUserId == (string)u.Id)">@u.Email</option>
+            }
+        </select>
+    </div>
+
+    <div class="md:col-span-2">
+        <label asp-for="Notes" class="block text-sm font-bold text-brand-ink mb-2"></label>
+        <textarea asp-for="Notes" rows="4"
+                  placeholder="أي معلومات تساعدك في إدارة هذا العميل..."
+                  class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition resize-none"></textarea>
+    </div>
+</div>

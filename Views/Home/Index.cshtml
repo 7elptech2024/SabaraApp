@@ -1,0 +1,1210 @@
+﻿@model List<Project>
+
+@{
+    Layout = "_LayoutMain";
+}
+
+<main class="main">
+
+    <!-- قسم البطل -->
+    <section id="hero" class="hero section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 content-col" data-aos="fade-up">
+                    <div class="content">
+                        <div class="agency-name">
+                            <h5>وكالتنا الإبداعية</h5>
+                        </div>
+
+                        <div class="main-heading">
+                            <h1>تصميم <br>إبداعي</h1>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="description">
+                            <p>نصمم واجهات رقمية تعكس هوية شركتك بوضوح واحترافية. نعمل على تحويل الأفكار التسويقية إلى تجربة بصرية قوية تساعدك على التميز في السوق الرقمي. فريقنا يجمع بين الإبداع والدقة لتقديم موقع يعكس خدماتك بأفضل صورة.</p>
+                        </div>
+
+                        <div class="cta-button">
+                            <a href="#services" class="btn">
+                                <span>استكشف المشاريع</span>
+                                <i class="bi bi-arrow-left"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5" data-aos="zoom-out">
+                    <div class="visual-content">
+                        <div class="fluid-shape">
+                            <img src="~/assets/img/logo.png" alt="شكل سائل تجريدي" class="fluid-img">
+                        </div>
+
+                        <div class="stats-card d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stats-number">
+                                    <h2>5K</h2>
+                                </div>
+                                <div class="stats-label">
+                                    <p>مشاريع منفذة</p>
+                                </div>
+                            </div>
+                            <div class="stats-arrow ">
+                                <a href="#portfolio"><i class="bi bi-arrow-up-left"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- /قسم البطل -->
+    <!-- قسم من نحن -->
+    <section id="about" class="about section">
+
+        <!-- عنوان القسم -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>من نحن</h2>
+            <div><span>تعرف على</span> <span class="description-title">المزيد عنا</span></div>
+        </div><!-- نهاية عنوان القسم -->
+
+        <div class="container">
+
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+                    <div class="about-image position-relative">
+                        <img src="~/assets/img/logo.png" class="img-fluid rounded-4 shadow-sm" alt="صورة عنا" loading="lazy">
+                        <div class="experience-badge">
+                            <span class="years">20+</span>
+                            <span class="text">سنوات من الخبرة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-4 mt-lg-0" data-aos="fade-left" data-aos-delay="300">
+                    <div class="about-content">
+                        <h2>من نحن</h2>
+                        <p class="lead">
+                            صبارة تك هي شركة فلسطينية متخصصة في تقديم حلول التسويق الرقمي وتصميم الهويات البصرية. نعمل على بناء واجهات رقمية تعكس احترافية العلامة التجارية، ونسعى لتقديم تجربة مستخدم سلسة تساهم في جذب العملاء وتحقيق الأهداف.
+                        </p>
+                        <p>
+                            فريقنا يتميز بالخبرة والابتكار، ويستخدم أدوات حديثة لتقديم خدمات تشمل تصميم المواقع، تصميم الشعارات، كتابة المحتوى، وإدارة الحملات الإعلانية الرقمية. هدفنا هو رفع كفاءة ظهورك الرقمي وتعزيز تواصلك مع جمهورك المستهدف.
+                        </p>
+
+                        <div class="row g-4 mt-3">
+                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="400">
+                                <div class="feature-item">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <h5>رؤيتنا</h5>
+                                    <p>أن نكون الشريك الأول في تصميم وتطوير الحلول الرقمية للشركات الناشئة والمتوسطة في الوطن العربي.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="450">
+                                <div class="feature-item">
+                                    <i class="bi bi-lightbulb-fill"></i>
+                                    <h5>خبراتنا</h5>
+                                    <p>نمتلك فريقًا متخصصًا في التصميم والتطوير والتسويق الرقمي بخبرة تمتد لأكثر من 5 سنوات.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="#" class="btn btn-primary mt-4">استكشف خدماتنا</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-section mt-5 pt-5" data-aos="fade-up" data-aos-delay="100">
+                <div class="row">
+                    <div class="col-lg-4" data-aos="fade-right" data-aos-delay="200">
+                        <div class="testimonial-intro">
+                            <h3>عملاؤنا يتحدثون بإعجاب</h3>
+                            <p>استمع مباشرة من أولئك الذين جربوا تأثير شراكتنا وحققوا أهدافهم الاستراتيجية.</p>
+                            <div class="swiper-nav-buttons mt-4">
+                                <button class="slider-prev"><i class="bi bi-arrow-right"></i></button>
+                                <button class="slider-next"><i class="bi bi-arrow-left"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8" data-aos="fade-left" data-aos-delay="300">
+                        <div class="testimonial-slider swiper init-swiper">
+                            <script type="application/json" class="swiper-config">
+                                {
+                                  "loop": true,
+                                  "speed": 800,
+                                  "autoplay": {
+                                    "delay": 5000
+                                  },
+                                  "slidesPerView": 1,
+                                  "spaceBetween": 30,
+                                  "navigation": {
+                                    "nextEl": ".slider-next",
+                                    "prevEl": ".slider-prev"
+                                  },
+                                  "breakpoints": {
+                                    "768": {
+                                      "slidesPerView": 2
+                                    }
+                                  }
+                                }
+                            </script>
+                            <div class="swiper-wrapper">
+
+
+                                <div class="swiper-slide">
+                                    <div class="testimonial-item">
+                                        <div class="rating mb-3">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-half"></i>
+                                        </div>
+                                        <p>"كان التعاون مع فريقهم بمثابة كشف. قادتنا استراتيجياتهم المبتكرة نحو تحقيق أهدافنا بدقة وسرعة."</p>
+                                        <div class="client-info d-flex align-items-center mt-4">
+                                            <img src="~/assets/img/person/Person1.png" class="client-img" alt="عميل" loading="lazy">
+                                            <div>
+                                                <h6 class="mb-0">عبد الله العربي</h6>
+                                                <span>مهندس حاسوب</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-slide">
+                                    <div class="testimonial-item">
+                                        <div class="rating mb-3">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                        </div>
+                                        <p>"عمق المعرفة والتفاني الذي يقدمونه في كل مشروع استثنائي. أصبحوا حليفًا أساسيًا في دفع توسعنا."</p>
+                                        <div class="client-info d-flex align-items-center mt-4">
+                                            <img src="~/assets/img/person/Person.png" class="client-img" alt="عميل" loading="lazy">
+                                            <div>
+                                                <h6 class="mb-0">مها عمر</h6>
+                                                <span>كاتب</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-slide">
+                                    <div class="testimonial-item">
+                                        <div class="rating mb-3">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                        </div>
+                                        <p>
+                                            "فريق محترف وفهمهم لاحتياجاتنا كان دقيقًا جدًا. التصميم الذي حصلنا عليه فاق توقعاتنا من حيث الجودة والدقة والسرعة في التسليم."
+                                        </p>
+                                        <div class="client-info d-flex align-items-center mt-4">
+                                            <img src="~/assets/img/person/Person.png" class="client-img" alt="عميلة" loading="lazy">
+                                            <div>
+                                                <h6 class="mb-0">سارة العتيبي</h6>
+                                                <span>مديرة تسويق رقمي</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section><!-- /قسم من نحن -->
+    <!-- قسم الخدمات -->
+    <section id="services" class="services section">
+
+        <!-- عنوان القسم -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>خدماتنا</h2>
+            <div><span>اكتشف</span> <span class="description-title">خدماتنا</span></div>
+        </div><!-- نهاية عنوان القسم -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="service-header">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="service-intro">
+                            <h2 class="service-heading">
+                                <div>حلول أداء أعمال</div>
+                                <div><span>مبتكرة</span></div>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="service-summary">
+                            <p>
+                                ندمج استراتيجيات تتطلع إلى المستقبل، ومناهج إبداعية، وتقنيات حديثة لتقديم تجارب عملاء استثنائية تعزز النمو وتشرك الأسواق المستهدفة.
+                            </p>
+                            <a href="#" class="service-btn">
+                                عرض جميع الخدمات
+                                <i class="bi bi-arrow-left"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-card position-relative z-1">
+                        <div class="service-icon">
+                            <i class="bi bi-code-slash"></i>
+                        </div>
+                        <a href="Home/ServiceWebsite" class="card-action d-flex align-items-center justify-content-center rounded-circle">
+                            <i class="bi bi-arrow-up-left"></i>
+                        </a>
+                        <h3>
+                            <a href="Home/ServiceWebsite">
+                                <span>إدارة المواقع</span> الإلكترونية
+                            </a>
+                        </h3>
+                        <p>
+                            نقوم بتحديث وصيانة المواقع لضمان استمرارية العمل وتحسين الأداء بشكل احترافي ومتكامل دائمًا.
+
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-card position-relative z-1">
+                        <div class="service-icon">
+                            <i class="bi bi-laptop"></i>
+                        </div>
+                        <a href="Home/ServiceWebsiteDesign" class="card-action d-flex align-items-center justify-content-center rounded-circle">
+                            <i class="bi bi-arrow-up-left"></i>
+                        </a>
+                        <h3>
+                            <a href="Home/ServiceWebsiteDesign">
+                                <span>تصميم واجهات</span> المواقع
+                            </a>
+                        </h3>
+                        <p>
+                            نُصمم واجهات جذابة ومتجاوبة تناسب جميع الأجهزة وتُظهر موقعك بشكل عصري ومميز للمستخدمين.
+
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-card position-relative z-1">
+                        <div class="service-icon">
+                            <i class="bi bi-palette"></i>
+                        </div>
+                        <a href="Home/ServiceBrandDesign" class="card-action d-flex align-items-center justify-content-center rounded-circle">
+                            <i class="bi bi-arrow-up-left"></i>
+                        </a>
+                        <h3>
+                            <a href="Home/ServiceBrandDesign">
+                                <span>تصميم الهوية</span> التجارية
+                            </a>
+                        </h3>
+                        <p>
+                            نُقدم شعارات وألواناً ومواد تعريفية متناسقة تُعبر عن شخصية علامتك التجارية بكل احترافية.
+
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-card position-relative z-1">
+                        <div class="service-icon">
+                            <i class="bi bi-file-earmark-text-fill"></i>
+
+                        </div>
+                        <a href="Home/ServicePrintAdDesign" class="card-action d-flex align-items-center justify-content-center rounded-circle">
+                            <i class="bi bi-arrow-up-left"></i>
+                        </a>
+                        <h3>
+                            <a href="Home/ServicePrintAdDesign">
+                                <span>تصميم إعلانات</span> مطبوعة
+                            </a>
+                        </h3>
+                        <p>
+                            نُصمم بروشورات وفلايرات وملصقات بجودة عالية تعكس رسالتك التسويقية للجمهور بوضوح.
+
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-card position-relative z-1">
+                        <div class="service-icon">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <a href="Home/ServiceSocialMediaAds" class="card-action d-flex align-items-center justify-content-center rounded-circle">
+                            <i class="bi bi-arrow-up-left"></i>
+                        </a>
+                        <h3>
+                            <a href="Home/ServiceSocialMediaAds">
+                                <span>إعلانات السوشيال</span> ميديا
+                            </a>
+                        </h3>
+                        <p>
+                            تصاميم احترافية ومناسبة لمختلف المنصات الاجتماعية، تُساعدك على جذب العملاء بشكل فعّال.
+
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-card position-relative z-1">
+                        <div class="service-icon">
+                            <i class="bi bi-camera-video"></i>
+                        </div>
+                        <a href="Home/ServiceVideoDesign" class="card-action d-flex align-items-center justify-content-center rounded-circle">
+                            <i class="bi bi-arrow-up-left"></i>
+                        </a>
+                        <h3>
+                            <a href="Home/ServiceVideoDesign">
+                                <span>تصميم الفيديوهات</span> الترويجية
+                            </a>
+                        </h3>
+                        <p>
+                            نُنتج فيديوهات تعريفية أو إعلانية بجودة عالية تساعد على توصيل رسالتك بسرعة وجاذبية.
+
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-card position-relative z-1">
+                        <div class="service-icon">
+                            <i class="bi bi-mic-fill"></i>
+                        </div>
+                        <a href="Home/ServiceCommentary" class="card-action d-flex align-items-center justify-content-center rounded-circle">
+                            <i class="bi bi-arrow-up-left"></i>
+                        </a>
+                        <h3>
+                            <a href="Home/ServiceCommentary">
+                                <span>التعليق والهندسة</span> الصوتية
+                            </a>
+                        </h3>
+                        <p>
+                            تسجيلات وتعليقات صوتية احترافية باللغة العربية أو الإنجليزية تُناسب مشاريعك المختلفة.
+
+
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-card position-relative z-1">
+                        <div class="service-icon">
+                            <i class="bi bi-pen-fill"></i>
+                        </div>
+                        <a href="Home/ServiceContent" class="card-action d-flex align-items-center justify-content-center rounded-circle">
+                            <i class="bi bi-arrow-up-left"></i>
+                        </a>
+                        <h3>
+                            <a href="Home/ServiceContent">
+                                <span>كتابة المحتوى</span> التسويقي
+                            </a>
+                        </h3>
+                        <p>
+                            نكتب محتوى تسويقياً موجهاً ومؤثراً لمواقعك وإعلاناتك ليصل رسالتك للجمهور بأفضل طريقة.
+
+
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /قسم الخدمات -->
+    <!-- قسم الخطوات -->
+    <section id="steps" class="steps section">
+
+        <!-- عنوان القسم -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>خطوات العمل</h2>
+            <div><span>كيف</span> <span class="description-title">نعمل</span></div>
+        </div><!-- نهاية عنوان القسم -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="steps-wrapper">
+
+                <div class="step-item" data-aos="fade-right" data-aos-delay="200">
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="bi bi-lightbulb"></i>
+                        </div>
+                        <div class="step-info">
+                            <span class="step-number">الخطوة 01</span>
+                            <h3>الاستشارة الأولية</h3>
+                            <p>إجراء جلسات اكتشاف شاملة لفهم متطلبات عملك وأهدافك. يحلل فريقنا الخبير احتياجاتك لإنشاء نهج مخصص.</p>
+                        </div>
+                    </div>
+                </div><!-- نهاية عنصر الخطوة -->
+
+                <div class="step-item" data-aos="fade-left" data-aos-delay="300">
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="bi bi-gear"></i>
+                        </div>
+                        <div class="step-info">
+                            <span class="step-number">الخطوة 02</span>
+                            <h3>التخطيط والاستراتيجية</h3>
+                            <p>تطوير استراتيجيات شاملة وخطط مشروع مفصلة بناءً على الاستشارة الأولية. ننشئ خطط عمل واضحة مع معالم واضحة ونتائج ملموسة.</p>
+                        </div>
+                    </div>
+                </div><!-- نهاية عنصر الخطوة -->
+
+                <div class="step-item" data-aos="fade-right" data-aos-delay="400">
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="bi bi-bar-chart"></i>
+                        </div>
+                        <div class="step-info">
+                            <span class="step-number">الخطوة 03</span>
+                            <h3>مرحلة التطوير</h3>
+                            <p>تنفيذ الاستراتيجيات المخططة بدقة ومرونة. ينفذ فريقنا الحلول مع الحفاظ على التواصل المستمر وتحديثات التقدم.</p>
+                        </div>
+                    </div>
+                </div><!-- نهاية عنصر الخطوة -->
+
+                <div class="step-item" data-aos="fade-left" data-aos-delay="500">
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                        <div class="step-info">
+                            <span class="step-number">الخطوة 04</span>
+                            <h3>الإطلاق والدعم</h3>
+                            <p>ضمان نشر سلس وتقديم دعم مستمر للحلول المطبقة. نراقب الأداء ونجري التعديلات اللازمة للحصول على نتائج مثالية.</p>
+                        </div>
+                    </div>
+                </div><!-- نهاية عنصر الخطوة -->
+
+            </div>
+
+        </div>
+
+    </section><!-- /قسم الخطوات -->
+    <!-- قسم دعوة للعمل -->
+    <section id="call-to-action" class="call-to-action section">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="advertise-1 d-flex flex-column flex-lg-row gap-4 align-items-center position-relative">
+
+                <div class="content-left flex-grow-1" data-aos="fade-right" data-aos-delay="200">
+                    <span class="badge text-uppercase mb-2">لا تفوت الفرصة!</span>
+                    <h2>حدث ثورة في تجربتك الرقمية اليوم</h2>
+                    <p class="my-4">تعزز استراتيجية نمو عملك من خلال حلول مبتكرة وتقنية متطورة. انضم إلى الآلاف من العملاء الراضين الذين حولوا عملياتهم.</p>
+
+                    <div class="features d-flex flex-wrap gap-3 mb-4">
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>دعم مميز</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>تكامل سحابي</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>تحليلات في الوقت الفعلي</span>
+                        </div>
+                    </div>
+
+                    <div class="cta-buttons d-flex flex-wrap gap-3">
+                        <a href="#" class="btn btn-primary">ابدأ التجربة المجانية</a>
+                        <a href="#" class="btn btn-outline">معرفة المزيد</a>
+                    </div>
+                </div>
+
+                <div class="content-right position-relative" data-aos="fade-left" data-aos-delay="300">
+                    <img src="~/assets/img/logo.png" alt="منصة رقمية" class="img-fluid rounded-4">
+                    <div class="floating-card">
+                        <div class="card-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="stats-number">245%</span>
+                            <span class="stats-text">معدل النمو</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decoration">
+                    <div class="circle-1"></div>
+                    <div class="circle-2"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /قسم دعوة للعمل -->
+    <!-- قسم آراء العملاء -->
+    <section id="testimonials" class="testimonials section">
+
+        <!-- عنوان القسم -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>آراء العملاء</h2>
+            <div><span>اكتشف</span> <span class="description-title">آراء عملائنا</span></div>
+        </div><!-- نهاية عنوان القسم -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="testimonials-slider swiper init-swiper">
+                <script type="application/json" class="swiper-config">
+                    {
+                      "slidesPerView": 1,
+                      "loop": true,
+                      "speed": 600,
+                      "autoplay": {
+                        "delay": 5000
+                      },
+                      "navigation": {
+                        "nextEl": ".swiper-button-next",
+                        "prevEl": ".swiper-button-prev"
+                      }
+                    }
+                </script>
+
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h2>تجربة رائعة مع الفريق</h2>
+                                    <p>
+                                        لقد قدم فريق العمل تجربة مميزة ورائعة، كان الالتزام بالمواعيد والدقة في التنفيذ من أبرز ما يميزهم. أنصح الجميع بالتعامل معهم.
+                                    </p>
+                                    <p>
+                                        كان التعاون معهم تجربة فريدة من نوعها، حيث قدموا حلولاً مبتكرة ساعدت في تطوير أعمالنا بشكل كبير. نعتبرهم الآن جزءًا أساسيًا من فريقنا.
+                                    </p>
+                                    <div class="profile d-flex align-items-center">
+                                        <img src="~/assets/img/person/Person1.png" class="profile-img" alt="">
+                                        <div class="profile-info">
+                                            <h3>سعد الغامدي</h3>
+                                            <span>عميل</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 d-none d-lg-block">
+                                    <div class="featured-img-wrapper">
+                                        <img src="~/assets/img/person/Person1.png" class="featured-img" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- نهاية عنصر الرأي -->
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h2>احترافية عالية وتنفيذ دقيق</h2>
+                                    <p>
+                                        تفاجأت بمستوى الاحترافية العالية التي يتمتع بها الفريق. كانوا دقيقين في تنفيذ كل التفاصيل، وقدموا حلولاً تتجاوز توقعاتنا.
+                                    </p>
+                                    <p>
+                                        لم يكن العمل معهم مجرد تنفيذ لمتطلباتنا، بل قدمونا نصائح وإضافات قيمة ساعدت في تطوير مشروعنا بشكل كبير. نعتبرهم شركاء نجاحنا.
+                                    </p>
+                                    <div class="profile d-flex align-items-center">
+                                        <img src="~/assets/img/person/Person.png" class="profile-img" alt="">
+                                        <div class="profile-info">
+                                            <h3>نورا السليم</h3>
+                                            <span>مصممة</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 d-none d-lg-block">
+                                    <div class="featured-img-wrapper">
+                                        <img src="~/assets/img/person/Person.png" class="featured-img" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- نهاية عنصر الرأي -->
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h2>نتائج تتجاوز التوقعات</h2>
+                                    <p>
+                                        بعد التعاون مع الفريق، حققنا نتائج تجاوزت كل توقعاتنا. كانوا دائمًا متواجدين لتقديم الدعم والاستشارات القيمة.
+                                    </p>
+                                    <p>
+                                        ما يميزهم هو فهمهم العميق لاحتياجات العملاء، وقدرتهم على تقديم حلول مخصصة تناسب كل مشروع على حدة. أنصح أي شخص يبحث عن جودة عالية بالتعامل معهم.
+                                    </p>
+                                    <div class="profile d-flex align-items-center">
+                                        <img src="~/assets/img/person/Person1.png" class="profile-img" alt="">
+                                        <div class="profile-info">
+                                            <h3>خالد الفهيد</h3>
+                                            <span>مستقل</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 d-none d-lg-block">
+                                    <div class="featured-img-wrapper">
+                                        <img src="~/assets/img/person/Person1.png" class="featured-img" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- نهاية عنصر الرأي -->
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h2>التزام بالمواعيد وجودة عالية</h2>
+                                    <p>
+                                        كان الفريق ملتزمًا بكل المواعيد المتفق عليها، وقدموا عملًا يتميز بالجودة العالية والاهتمام بالتفاصيل.
+                                    </p>
+                                    <p>
+                                        ما أثار إعجابي هو قدرتهم على فهم رؤيتنا وتحويلها إلى واقع ملموس. كان التواصل معهم سلسًا وفعالاً طوال فترة التعاون.
+                                    </p>
+                                    <div class="profile d-flex align-items-center">
+                                        <img src="~/assets/img/person/Person.png" class="profile-img" alt="">
+                                        <div class="profile-info">
+                                            <h3>لمى القحطاني</h3>
+                                            <span>صاحبة متجر</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 d-none d-lg-block">
+                                    <div class="featured-img-wrapper">
+                                        <img src="~/assets/img/person/Person.png" class="featured-img" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- نهاية عنصر الرأي -->
+
+                </div>
+
+                <div class="swiper-navigation w-100 d-flex align-items-center justify-content-center">
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /قسم آراء العملاء -->
+    <!-- قسم الأعمال -->
+    <section id="portfolio" class="portfolio section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>أعمالنا</h2>
+            <div><span>اكتشف</span> <span class="description-title">أعمالنا</span></div>
+        </div>
+
+        <div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
+            <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+                <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="200">
+                    <li data-filter="*" class="filter-active">
+                        <i class="bi bi-grid-3x3"></i> جميع المشاريع
+                    </li>
+                    <li data-filter=".filter-ui"><i class="bi bi-phone"></i> واجهات المستخدم</li>
+                    <li data-filter=".filter-development"><i class="bi bi-code-slash"></i> تطوير</li>
+                    <li data-filter=".filter-photography"><i class="bi bi-camera"></i> تصوير</li>
+                    <li data-filter=".filter-marketing"><i class="bi bi-graph-up"></i> تسويق</li>
+                </ul>
+
+                <div class="row g-4 isotope-container" data-aos="fade-up" data-aos-delay="300">
+
+                    @foreach (var project in Model)
+                    {
+                        string filterClass = project.Category switch
+                        {
+                            "واجهات المستخدم" => "filter-ui",
+                            "تطوير" => "filter-development",
+                            "تصوير" => "filter-photography",
+                            "تسويق" => "filter-marketing",
+                            _ => ""
+                        };
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 portfolio-item isotope-item @filterClass">
+                            <article class="portfolio-entry">
+                                <figure class="entry-image">
+                                    <img src="@project.ImagePath" class="img-fluid" alt="@project.Name" loading="lazy">
+                                    <div class="entry-overlay">
+                                        <div class="overlay-content">
+                                            <div class="entry-meta">@project.Category</div>
+                                            <h3 class="entry-title">@project.Name</h3>
+                                            <div class="entry-links">
+                                                <a href="@project.ImagePath" class="glightbox"
+                                                   data-gallery="portfolio-gallery-@filterClass"
+                                                   data-glightbox="title: @project.Name; description: @project.Description">
+                                                    <i class="bi bi-arrows-angle-expand"></i>
+                                                </a>
+                                                <a href="#">
+                                                    <i class="bi bi-arrow-left"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </figure>
+                            </article>
+                        </div>
+                    }
+
+                </div><!-- نهاية الحاوية -->
+
+            </div>
+        </div>
+    </section>
+    <!-- قسم الفريق -->
+    <section id="team" class="team section">
+
+        <!-- عنوان القسم -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>فريقنا</h2>
+            <div><span>تعرف على</span> <span class="description-title">فريقنا</span></div>
+        </div><!-- نهاية عنوان القسم -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="team-member d-flex">
+                        <div class="member-img">
+                            <img src="~/assets/img/person/Person1.png" class="img-fluid" alt="" loading="lazy">
+                        </div>
+                        <div class="member-info flex-grow-1">
+                            <h4>صبحي محمد</h4>
+                            <span>الرئيس التنفيذي</span>
+                            <p>خبير في إدارة الأعمال مع أكثر من 15 عامًا من الخبرة في قيادة الفرق وتنفيذ الاستراتيجيات الناجحة.</p>
+                            <div class="social">
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-twitter-x"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                                <a href=""><i class="bi bi-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- نهاية عضو الفريق -->
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="team-member d-flex">
+                        <div class="member-img">
+                            <img src="~/assets/img/person/Person.png" class="img-fluid" alt="" loading="lazy">
+                        </div>
+                        <div class="member-info flex-grow-1">
+                            <h4>سارة محمد</h4>
+                            <span>مديرة المنتج</span>
+                            <p>متخصصة في إدارة المنتجات الرقمية مع خبرة واسعة في تطوير حلول مبتكرة تلبي احتياجات العملاء.</p>
+                            <div class="social">
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-twitter-x"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                                <a href=""><i class="bi bi-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- نهاية عضو الفريق -->
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="team-member d-flex">
+                        <div class="member-img">
+                            <img src="~/assets/img/person/Person1.png" class="img-fluid" alt="" loading="lazy">
+                        </div>
+                        <div class="member-info flex-grow-1">
+                            <h4>خالد عبدالله</h4>
+                            <span>مدير التقنية</span>
+                            <p>خبير في التكنولوجيا مع قدرة فريدة على تحويل الأفكار إلى حلول تقنية عملية وفعالة.</p>
+                            <div class="social">
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-twitter-x"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                                <a href=""><i class="bi bi-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- نهاية عضو الفريق -->
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="team-member d-flex">
+                        <div class="member-img">
+                            <img src="~/assets/img/person/Person.png" class="img-fluid" alt="" loading="lazy">
+                        </div>
+                        <div class="member-info flex-grow-1">
+                            <h4>نورة سليمان</h4>
+                            <span>محاسبة</span>
+                            <p>محاسبة محترفة مع خبرة في إدارة الموارد المالية وضمان الشفافية المالية للشركة.</p>
+                            <div class="social">
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-twitter-x"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                                <a href=""><i class="bi bi-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- نهاية عضو الفريق -->
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="team-member d-flex">
+                        <div class="member-img">
+                            <img src="~/assets/img/person/Person1.png" class="img-fluid" alt="" loading="lazy">
+                        </div>
+                        <div class="member-info flex-grow-1">
+                            <h4>عمر راشد</h4>
+                            <span>تسويق</span>
+                            <p>متخصص في التسويق الرقمي مع قدرة على تطوير استراتيجيات تسويقية فعالة تزيد من وصول العلامة التجارية.</p>
+                            <div class="social">
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-twitter-x"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                                <a href=""><i class="bi bi-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- نهاية عضو الفريق -->
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="600">
+                    <div class="team-member d-flex">
+                        <div class="member-img">
+                            <img src="~/assets/img/person/Person.png" class="img-fluid" alt="" loading="lazy">
+                        </div>
+                        <div class="member-info flex-grow-1">
+                            <h4>لمى عبدالرحمن</h4>
+                            <span>عمليات</span>
+                            <p>مديرة عمليات محترفة مع خبرة في تحسين العمليات وزيادة الكفاءة التشغيلية للشركة.</p>
+                            <div class="social">
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-twitter-x"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                                <a href=""><i class="bi bi-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- نهاية عضو الفريق -->
+
+            </div>
+
+        </div>
+
+    </section><!-- /قسم الفريق -->
+    <!-- قسم الأسعار -->
+    <section id="pricing" class="pricing section">
+
+        <!-- عنوان القسم -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>الباقات</h2>
+            <div><span>اكتشف</span> <span class="description-title">باقاتنا</span></div>
+        </div><!-- نهاية عنوان القسم -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4">
+                <!-- الباقة الأساسية -->
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="pricing-card">
+                        <div class="plan-header">
+                            <div class="plan-icon">
+                                <i class="bi bi-box"></i>
+                            </div>
+                            <h3>البداية</h3>
+                            <p>للأفراد الذين بدأوا للتو</p>
+                        </div>
+                        <div class="plan-pricing">
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount">49</span>
+                                <span class="period">/شهر</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li><i class="bi bi-check-circle-fill"></i> تصميم موقع أساسي</li>
+                                <li><i class="bi bi-check-circle-fill"></i> 5 صفحات</li>
+                                <li><i class="bi bi-check-circle-fill"></i> استضافة أساسية</li>
+                                <li class="disabled"><i class="bi bi-x-circle-fill"></i> دعم فني 24/7</li>
+                                <li class="disabled"><i class="bi bi-x-circle-fill"></i> تحليلات متقدمة</li>
+                            </ul>
+                        </div>
+                        <div class="plan-cta">
+                            <a href="#" class="btn-plan" data-bs-toggle="modal" data-bs-target="#orderModal"
+                               data-packagename="باقة/البداية">اختر الباقة</a>
+                        </div>
+                    </div>
+                </div><!-- نهاية الباقة الأساسية -->
+                <!-- الباقة الاحترافية -->
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="pricing-card popular">
+                        <div class="popular-tag">الأكثر شيوعًا</div>
+                        <div class="plan-header">
+                            <div class="plan-icon">
+                                <i class="bi bi-briefcase"></i>
+                            </div>
+                            <h3>المحترف</h3>
+                            <p>للشركات الصغيرة والمتوسطة</p>
+                        </div>
+                        <div class="plan-pricing">
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount">99</span>
+                                <span class="period">/شهر</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li><i class="bi bi-check-circle-fill"></i> تصميم موقع متكامل</li>
+                                <li><i class="bi bi-check-circle-fill"></i> 15 صفحة</li>
+                                <li><i class="bi bi-check-circle-fill"></i> استضافة سحابية</li>
+                                <li><i class="bi bi-check-circle-fill"></i> دعم فني 24/7</li>
+                                <li class="disabled"><i class="bi bi-x-circle-fill"></i> تحليلات متقدمة</li>
+                            </ul>
+                        </div>
+                        <div class="plan-cta">
+                            <a href="#" class="btn-plan" data-bs-toggle="modal" data-bs-target="#orderModal"
+                               data-packagename=" باقة/المحترف">اختر الباقة</a>
+                        </div>
+                    </div>
+                </div><!-- نهاية الباقة الاحترافية -->
+                <!-- الباقة المتقدمة -->
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="pricing-card">
+                        <div class="plan-header">
+                            <div class="plan-icon">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <h3>المتقدمة</h3>
+                            <p>للشركات الكبيرة والمؤسسات</p>
+                        </div>
+                        <div class="plan-pricing">
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount">199</span>
+                                <span class="period">/شهر</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li><i class="bi bi-check-circle-fill"></i> تصميم موقع متكامل</li>
+                                <li><i class="bi bi-check-circle-fill"></i> صفحات غير محدودة</li>
+                                <li><i class="bi bi-check-circle-fill"></i> استضافة سحابية متقدمة</li>
+                                <li><i class="bi bi-check-circle-fill"></i> دعم فني 24/7</li>
+                                <li><i class="bi bi-check-circle-fill"></i> تحليلات متقدمة</li>
+                            </ul>
+                        </div>
+                        <div class="plan-cta">
+                            <a href="#" class="btn-plan" data-bs-toggle="modal" data-bs-target="#orderModal"
+                               data-packagename="باقة/المتقدمة">اختر الباقة</a>
+                        </div>
+                    </div>
+                </div><!-- نهاية الباقة المتقدمة -->
+            </div>
+
+        </div>
+
+    </section><!-- /قسم الأسعار -->
+    <!-- قسم الأسئلة الشائعة -->
+    <section class="faq-9 faq section" id="faq">
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-5" data-aos="fade-up">
+                    <h2 class="faq-title">لديك سؤال؟ اطلع على الأسئلة الشائعة</h2>
+                    <p class="faq-description">في صبارة تك، نحرص دائمًا على وضوح التفاصيل مع عملائنا. جمعنا لك أهم الأسئلة الشائعة لنساعدك في فهم خدماتنا وآلية تنفيذ المشاريع بكل ثقة وشفافية.</p>
+                    <div class="faq-arrow d-none d-lg-block" data-aos="fade-up" data-aos-delay="200">
+                        <svg class="faq-arrow" width="200" height="211" viewBox="0 0 200 211" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M198.804 194.488C189.279 189.596 179.529 185.52 169.407 182.07L169.384 182.049C169.227 181.994 169.07 181.939 168.912 181.884C166.669 181.139 165.906 184.546 167.669 185.615C174.053 189.473 182.761 191.837 189.146 195.695C156.603 195.912 119.781 196.591 91.266 179.049C62.5221 161.368 48.1094 130.695 56.934 98.891C84.5539 98.7247 112.556 84.0176 129.508 62.667C136.396 53.9724 146.193 35.1448 129.773 30.2717C114.292 25.6624 93.7109 41.8875 83.1971 51.3147C70.1109 63.039 59.63 78.433 54.2039 95.0087C52.1221 94.9842 50.0776 94.8683 48.0703 94.6608C30.1803 92.8027 11.2197 83.6338 5.44902 65.1074C-1.88449 41.5699 14.4994 19.0183 27.9202 1.56641C28.6411 0.625793 27.2862 -0.561638 26.5419 0.358501C13.4588 16.4098 -0.221091 34.5242 0.896608 56.5659C1.8218 74.6941 14.221 87.9401 30.4121 94.2058C37.7076 97.0203 45.3454 98.5003 53.0334 98.8449C47.8679 117.532 49.2961 137.487 60.7729 155.283C87.7615 197.081 139.616 201.147 184.786 201.155L174.332 206.827C172.119 208.033 174.345 211.287 176.537 210.105C182.06 207.125 187.582 204.122 193.084 201.144C193.346 201.147 195.161 199.887 195.423 199.868C197.08 198.548 193.084 201.144 195.528 199.81C196.688 199.192 197.846 198.552 199.006 197.935C200.397 197.167 200.007 195.087 198.804 194.488ZM60.8213 88.0427C67.6894 72.648 78.8538 59.1566 92.1207 49.0388C98.8475 43.9065 106.334 39.2953 114.188 36.1439C117.295 34.8947 120.798 33.6609 124.168 33.635C134.365 33.5511 136.354 42.9911 132.638 51.031C120.47 77.4222 86.8639 93.9837 58.0983 94.9666C58.8971 92.6666 59.783 90.3603 60.8213 88.0427Z" fill="currentColor"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="col-lg-7" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-container">
+
+                        <div class="faq-item faq-active">
+                            <h3>ما هي مدة تنفيذ المشروع؟</h3>
+                            <div class="faq-content">
+                                <p>تختلف مدة التنفيذ حسب حجم المشروع وتعقيده، ولكن في المتوسط تستغرق المشاريع الصغيرة من 2-4 أسابيع، والمتوسطة من 4-8 أسابيع، والكبيرة من 8-12 أسبوعًا.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-left"></i>
+                        </div><!-- نهاية عنصر السؤال -->
+
+                        <div class="faq-item">
+                            <h3>هل تقدمون دعمًا بعد التسليم؟</h3>
+                            <div class="faq-content">
+                                <p>نعم، نقدم دعمًا فنيًا لمدة شهر واحد بعد تسليم المشروع مجانًا، ويمكن تمديد فترة الدعم بموجب عقد صيانة سنوي.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-left"></i>
+                        </div><!-- نهاية عنصر السؤال -->
+
+                        <div class="faq-item">
+                            <h3>ما هي طرق الدفع المتاحة؟</h3>
+                            <div class="faq-content">
+                                <p>نقبل الدفع عبر التحويل البنكي، وبطاقات الائتمان، وباي بال، كما يمكن الدفع نقدًا في مقرنا.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-left"></i>
+                        </div><!-- نهاية عنصر السؤال -->
+
+                        <div class="faq-item">
+                            <h3>هل يمكنني طلب تعديلات خلال التنفيذ؟</h3>
+                            <div class="faq-content">
+                                <p>نعم، نسمح بثلاثة تعديلات كحد أقصى خلال مرحلة التنفيذ، مع مراعاة أن التعديلات الجوهرية قد تتطلب تكلفة إضافية.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-left"></i>
+                        </div><!-- نهاية عنصر السؤال -->
+
+                        <div class="faq-item">
+                            <h3>كيف يتم تحديد سعر المشروع؟</h3>
+                            <div class="faq-content">
+                                <p>يتم تحديد السعر بناءً على عدة عوامل تشمل حجم المشروع، وتعقيده، والوقت المطلوب لتنفيذه، والموارد البشرية والتقنية اللازمة.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-left"></i>
+                        </div><!-- نهاية عنصر السؤال -->
+
+                        <div class="faq-item">
+                            <h3>هل لديكم سياسة استرجاع؟</h3>
+                            <div class="faq-content">
+                                <p>نعم، في حال لم نلتزم بالمواصفات المتفق عليها في العقد، يحق للعميل استرجاع المبلغ كاملًا أو جزءًا منه حسب ما يتم الاتفاق عليه.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-left"></i>
+                        </div><!-- نهاية عنصر السؤال -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section><!-- /قسم الأسئلة الشائعة -->
+    <!-- قسم الاتصال -->
+    <section id="contact" class="contact section">
+
+        <!-- عنوان القسم -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>اتصل بنا</h2>
+            <div><span>دعونا</span> <span class="description-title">نتواصل</span></div>
+        </div><!-- نهاية عنوان القسم -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <!-- صناديق معلومات الاتصال -->
+            <div class="row gy-4 mb-5">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="contact-info-box">
+                        <div class="icon-box">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>عنواننا</h4>
+                            <p>1842 شارع خانيونس، غزة، فلسطين 12345</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="contact-info-box">
+                        <div class="icon-box">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>البريد الإلكتروني</h4>
+                            <p>info@example.com</p>
+                            <p>contact@example.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="contact-info-box">
+                        <div class="icon-box">
+                            <i class="bi bi-headset"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>ساعات العمل</h4>
+                            <p>الأحد - الخميس: 9 ص - 6 م</p>
+                            <p>السبت: 9 ص - 4 م</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- خرائط جوجل (عرض كامل) -->
+        <div class="map-section" data-aos="fade-up" data-aos-delay="200">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.097211197057!2d46.67529531500359!3d24.71355168411495!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03872de09ff7%3A0x619d96e45037779e!2sRiyadh%2C%20Saudi%20Arabia!5e0!3m2!1sen!2ssa!4v1719840000000" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <!-- قسم نموذج الاتصال (متداخل) -->
+        <div class="container form-container-overlap">
+            <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="col-lg-10">
+                    <div class="contact-form-wrapper">
+                        <h2 class="text-center mb-4">تواصل معنا</h2>
+
+                        <form action="forms/contact.php" method="post" class="php-email-form">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-with-icon">
+                                            <i class="bi bi-person"></i>
+                                            <input type="text" class="form-control" name="name" placeholder="الاسم الكامل" required="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-with-icon">
+                                            <i class="bi bi-envelope"></i>
+                                            <input type="email" class="form-control" name="email" placeholder="البريد الإلكتروني" required="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="input-with-icon">
+                                            <i class="bi bi-text-left"></i>
+                                            <input type="text" class="form-control" name="subject" placeholder="الموضوع" required="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="input-with-icon">
+                                            <i class="bi bi-chat-dots message-icon"></i>
+                                            <textarea class="form-control" name="message" placeholder="اكتب رسالتك..." style="height: 180px" required=""></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="loading">جاري التحميل</div>
+                                    <div class="error-message"></div>
+                                    <div class="sent-message">تم إرسال رسالتك بنجاح. شكرًا لك!</div>
+                                </div>
+
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary btn-submit">إرسال الرسالة</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section><!-- /قسم الاتصال -->
+
+</main>

@@ -1,0 +1,150 @@
+@model PagedList<Project>
+@{
+    ViewData["Title"] = "المشاريع";
+    ViewData["Subtitle"] = $"عدد المشاريع: {Model.TotalItems}";
+
+    var categories = ViewBag.Categories as List<string> ?? new List<string>();
+    string search = ViewBag.Search as string ?? "";
+    string category = ViewBag.Category as string ?? "";
+
+    ViewData["PaginationAction"] = "Index";
+    ViewData["PaginationController"] = "Project";
+    ViewData["RouteValues"] = new Dictionary<string, string?>
+    {
+        ["search"] = search,
+        ["category"] = category,
+    };
+}
+
+@await Html.PartialAsync("_Toast")
+
+<div class="bg-white rounded-2xl shadow-card overflow-hidden">
+
+    <!-- Header / filters -->
+    <div class="p-5 lg:p-6 border-b border-brand-surface">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
+            <div>
+                <h2 class="text-xl font-extrabold text-brand-ink flex items-center gap-2">
+                    <i class="bi bi-briefcase-fill text-brand-gold"></i>
+                    إدارة المشاريع
+                </h2>
+                <p class="text-xs text-brand-ink/60 mt-1">أضف، عدّل واحذف مشاريع المعرض على الصفحة الرئيسية</p>
+            </div>
+            <a href="/Project/Create"
+               class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-gold text-brand-ink font-bold hover:bg-yellow-400 transition shadow">
+                <i class="bi bi-plus-lg"></i> مشروع جديد
+            </a>
+        </div>
+
+        <form method="get" class="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <div class="md:col-span-7">
+                <div class="relative">
+                    <i class="bi bi-search absolute top-1/2 -translate-y-1/2 right-4 text-brand-ink/40"></i>
+                    <input type="text" name="search" value="@search"
+                           placeholder="ابحث باسم المشروع أو الوصف..."
+                           class="w-full pr-11 pl-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition text-sm" />
+                </div>
+            </div>
+            <div class="md:col-span-3">
+                <select name="category"
+                        class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition text-sm">
+                    <option value="">كل الأصناف</option>
+                    @foreach (var cat in categories)
+                    {
+                        <option value="@cat" selected="@(cat == category)">@cat</option>
+                    }
+                </select>
+            </div>
+            <div class="md:col-span-2 flex gap-2">
+                <button type="submit" class="flex-1 py-3 rounded-xl bg-brand-ink text-white font-bold hover:bg-brand-ink/90 transition text-sm">
+                    تصفية
+                </button>
+                <a href="/Project/Index" class="w-12 grid place-items-center rounded-xl bg-brand-surface text-brand-ink hover:bg-brand-surface/70 transition" title="إعادة تعيين">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Table -->
+    @if (Model.Items.Count == 0)
+    {
+        <div class="text-center py-20">
+            <div class="w-20 h-20 rounded-2xl bg-brand-surface mx-auto flex items-center justify-center mb-4">
+                <i class="bi bi-folder2-open text-3xl text-brand-gold-2"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-brand-ink">لا توجد مشاريع</h3>
+            <p class="text-sm text-brand-ink/60 mt-1">ابدأ بإضافة أول مشروع للمعرض</p>
+            <a href="/Project/Create" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-xl bg-brand-gold text-brand-ink font-bold hover:bg-yellow-400 transition">
+                <i class="bi bi-plus-lg"></i> مشروع جديد
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-brand-surface/50 text-brand-ink/70">
+                    <tr>
+                        <th class="text-right font-bold px-5 py-3 w-20">الصورة</th>
+                        <th class="text-right font-bold px-5 py-3">المشروع</th>
+                        <th class="text-right font-bold px-5 py-3 hidden md:table-cell">الصنف</th>
+                        <th class="text-right font-bold px-5 py-3 hidden lg:table-cell">تاريخ الإنشاء</th>
+                        <th class="text-end font-bold px-5 py-3 w-40">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-brand-surface">
+                @foreach (var p in Model.Items)
+                {
+                    <tr class="hover:bg-brand-surface/30 transition">
+                        <td class="px-5 py-3">
+                            @if (!string.IsNullOrEmpty(p.ImagePath))
+                            {
+                                <img src="@p.ImagePath" class="w-14 h-14 rounded-xl object-cover shadow-sm" alt="@p.Name">
+                            }
+                            else
+                            {
+                                <div class="w-14 h-14 rounded-xl bg-brand-surface flex items-center justify-center text-brand-gold-2">
+                                    <i class="bi bi-image text-lg"></i>
+                                </div>
+                            }
+                        </td>
+                        <td class="px-5 py-3">
+                            <div class="font-bold text-brand-ink">@p.Name</div>
+                            <div class="text-xs text-brand-ink/60 line-clamp-1 max-w-md mt-0.5">@p.Description</div>
+                        </td>
+                        <td class="px-5 py-3 hidden md:table-cell">
+                            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-gold/15 text-brand-gold-2">
+                                @p.Category
+                            </span>
+                        </td>
+                        <td class="px-5 py-3 hidden lg:table-cell text-brand-ink/70">
+                            @p.CreatedAt.ToString("yyyy/MM/dd")
+                        </td>
+                        <td class="px-5 py-3">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="/Project/Details/@p.Id"
+                                   class="w-9 h-9 grid place-items-center rounded-lg bg-brand-surface text-brand-ink hover:bg-brand-ink hover:text-white transition" title="تفاصيل">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="/Project/Edit/@p.Id"
+                                   class="w-9 h-9 grid place-items-center rounded-lg bg-brand-gold/15 text-brand-gold-2 hover:bg-brand-gold hover:text-white transition" title="تعديل">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="/Project/Delete/@p.Id"
+                                   class="w-9 h-9 grid place-items-center rounded-lg bg-red-50 text-red-600 hover:bg-red-500 hover:text-white transition" title="حذف">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="border-t border-brand-surface">
+            @await Html.PartialAsync("_Pagination", Model)
+        </div>
+    }
+</div>

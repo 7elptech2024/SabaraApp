@@ -1,0 +1,279 @@
+@model PagedList<Order>
+@{
+    ViewData["Title"] = "الطلبات";
+    ViewData["Subtitle"] = $"إجمالي الطلبات: {ViewBag.TotalCount}";
+
+    string search = ViewBag.Search as string ?? "";
+    string status = ViewBag.Status as string ?? "";
+    int pending = (int)(ViewBag.PendingCount ?? 0);
+    int replied = (int)(ViewBag.RepliedCount ?? 0);
+    int total = (int)(ViewBag.TotalCount ?? 0);
+
+    ViewData["PaginationAction"] = "Index";
+    ViewData["PaginationController"] = "Order";
+    ViewData["RouteValues"] = new Dictionary<string, string?>
+    {
+        ["search"] = search,
+        ["status"] = status,
+    };
+}
+
+@await Html.PartialAsync("_Toast")
+
+<!-- Status pills -->
+<div class="grid grid-cols-3 gap-3 lg:gap-4 mb-5">
+    <a href="/Order/Index" class="bg-white rounded-2xl p-4 shadow-card hover:shadow-lg transition @(string.IsNullOrEmpty(status) ? "ring-2 ring-brand-gold" : "")">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-brand-surface text-brand-gold-2 grid place-items-center">
+                <i class="bi bi-collection-fill"></i>
+            </div>
+            <div>
+                <div class="text-xl font-extrabold text-brand-ink">@total</div>
+                <div class="text-[11px] text-brand-ink/60">الكل</div>
+            </div>
+        </div>
+    </a>
+    <a href="/Order/Index?status=pending" class="bg-white rounded-2xl p-4 shadow-card hover:shadow-lg transition @(status == "pending" ? "ring-2 ring-amber-400" : "")">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 grid place-items-center">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+            <div>
+                <div class="text-xl font-extrabold text-brand-ink">@pending</div>
+                <div class="text-[11px] text-brand-ink/60">بانتظار الرد</div>
+            </div>
+        </div>
+    </a>
+    <a href="/Order/Index?status=replied" class="bg-white rounded-2xl p-4 shadow-card hover:shadow-lg transition @(status == "replied" ? "ring-2 ring-emerald-400" : "")">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 grid place-items-center">
+                <i class="bi bi-check-all"></i>
+            </div>
+            <div>
+                <div class="text-xl font-extrabold text-brand-ink">@replied</div>
+                <div class="text-[11px] text-brand-ink/60">تم الرد</div>
+            </div>
+        </div>
+    </a>
+</div>
+
+<div class="bg-white rounded-2xl shadow-card overflow-hidden">
+    <!-- Header / search -->
+    <div class="p-5 lg:p-6 border-b border-brand-surface">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
+            <div>
+                <h2 class="text-xl font-extrabold text-brand-ink flex items-center gap-2">
+                    <i class="bi bi-receipt text-brand-gold"></i>
+                    قائمة الطلبات
+                </h2>
+                <p class="text-xs text-brand-ink/60 mt-1">جميع طلبات العملاء القادمة من الموقع</p>
+            </div>
+        </div>
+
+        <form method="get" class="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <input type="hidden" name="status" value="@status" />
+            <div class="md:col-span-10">
+                <div class="relative">
+                    <i class="bi bi-search absolute top-1/2 -translate-y-1/2 right-4 text-brand-ink/40"></i>
+                    <input type="text" name="search" value="@search"
+                           placeholder="ابحث باسم العميل، رقم الهاتف أو الخدمة..."
+                           class="w-full pr-11 pl-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition text-sm" />
+                </div>
+            </div>
+            <div class="md:col-span-2 flex gap-2">
+                <button type="submit" class="flex-1 py-3 rounded-xl bg-brand-ink text-white font-bold hover:bg-brand-ink/90 transition text-sm">
+                    تصفية
+                </button>
+                <a href="/Order/Index" class="w-12 grid place-items-center rounded-xl bg-brand-surface text-brand-ink hover:bg-brand-surface/70 transition" title="إعادة تعيين">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.Items.Count == 0)
+    {
+        <div class="text-center py-20">
+            <div class="w-20 h-20 rounded-2xl bg-brand-surface mx-auto flex items-center justify-center mb-4">
+                <i class="bi bi-inbox text-3xl text-brand-gold-2"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-brand-ink">لا توجد طلبات</h3>
+            <p class="text-sm text-brand-ink/60 mt-1">عند وصول طلب جديد، سيظهر هنا تلقائياً</p>
+        </div>
+    }
+    else
+    {
+        <!-- Desktop table -->
+        <div class="overflow-x-auto hidden md:block">
+            <table class="w-full text-sm">
+                <thead class="bg-brand-surface/50 text-brand-ink/70">
+                    <tr>
+                        <th class="text-right font-bold px-5 py-3">العميل</th>
+                        <th class="text-right font-bold px-5 py-3">الهاتف</th>
+                        <th class="text-right font-bold px-5 py-3">الخدمة / الباقة</th>
+                        <th class="text-right font-bold px-5 py-3">تاريخ الطلب</th>
+                        <th class="text-right font-bold px-5 py-3">الحالة</th>
+                        <th class="text-end font-bold px-5 py-3 w-40">إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-brand-surface">
+                @foreach (var o in Model.Items)
+                {
+                    <tr class="hover:bg-brand-surface/30 transition">
+                        <td class="px-5 py-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-gold to-brand-green text-white flex items-center justify-center font-bold text-xs">
+                                    @(string.IsNullOrEmpty(o.CustomerName) ? "?" : o.CustomerName.Substring(0,1))
+                                </div>
+                                <span class="font-bold text-brand-ink">@o.CustomerName</span>
+                            </div>
+                        </td>
+                        <td class="px-5 py-3">
+                            <a href="tel:@o.PhoneNumber" class="text-brand-ink/80 hover:text-brand-gold-2 ltr-text" dir="ltr">@o.PhoneNumber</a>
+                        </td>
+                        <td class="px-5 py-3 text-brand-ink/80">@(string.IsNullOrEmpty(o.ServiceName) ? "—" : o.ServiceName)</td>
+                        <td class="px-5 py-3 text-brand-ink/70 text-xs">@o.CreatedAt.ToString("yyyy/MM/dd HH:mm")</td>
+                        <td class="px-5 py-3">
+                            @if (o.IsReplied)
+                            {
+                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-700">
+                                    <i class="bi bi-check-circle-fill"></i> تم الرد
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-700">
+                                    <i class="bi bi-clock-fill"></i> بانتظار الرد
+                                </span>
+                            }
+                        </td>
+                        <td class="px-5 py-3">
+                            <div class="flex items-center justify-end gap-2">
+                                @if (o.ClientId.HasValue)
+                                {
+                                    <a href="/Clients/Details/@o.ClientId" title="فتح ملف العميل"
+                                       class="w-9 h-9 grid place-items-center rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white transition">
+                                        <i class="bi bi-person-circle"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <form asp-action="ConvertToClient" asp-route-id="@o.Id" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" title="تحويل لعميل"
+                                                class="w-9 h-9 grid place-items-center rounded-lg bg-brand-gold/15 text-brand-gold-2 hover:bg-brand-gold hover:text-white transition">
+                                            <i class="bi bi-person-plus-fill"></i>
+                                        </button>
+                                    </form>
+                                }
+                                @if (!o.IsReplied)
+                                {
+                                    <form asp-action="MarkAsReplied" asp-route-id="@o.Id" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" title="تأكيد الرد"
+                                                class="w-9 h-9 grid place-items-center rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white transition">
+                                            <i class="bi bi-check2-all"></i>
+                                        </button>
+                                    </form>
+                                }
+                                <button type="button" title="عرض الملاحظات"
+                                        onclick="showNotes('@o.CustomerName', `@(o.Notes?.Replace("`", "\\`") ?? "لا توجد ملاحظات")`)"
+                                        class="w-9 h-9 grid place-items-center rounded-lg bg-brand-surface text-brand-ink hover:bg-brand-ink hover:text-white transition">
+                                    <i class="bi bi-chat-left-text"></i>
+                                </button>
+                                <form asp-action="Delete" asp-route-id="@o.Id" method="post"
+                                      onsubmit="return confirm('هل تريد حذف هذا الطلب؟');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" title="حذف"
+                                            class="w-9 h-9 grid place-items-center rounded-lg bg-red-50 text-red-600 hover:bg-red-500 hover:text-white transition">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile cards -->
+        <div class="md:hidden divide-y divide-brand-surface">
+            @foreach (var o in Model.Items)
+            {
+                <div class="p-4">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-green text-white flex items-center justify-center font-bold">
+                            @(string.IsNullOrEmpty(o.CustomerName) ? "?" : o.CustomerName.Substring(0,1))
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-bold text-brand-ink truncate">@o.CustomerName</div>
+                            <a href="tel:@o.PhoneNumber" class="text-xs text-brand-ink/60 ltr-text" dir="ltr">@o.PhoneNumber</a>
+                        </div>
+                        @if (o.IsReplied)
+                        {
+                            <span class="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 whitespace-nowrap">تم الرد</span>
+                        }
+                        else
+                        {
+                            <span class="text-[10px] font-bold px-2 py-1 rounded-full bg-amber-100 text-amber-700 whitespace-nowrap">بانتظار</span>
+                        }
+                    </div>
+                    <div class="text-xs text-brand-ink/70 mb-2">
+                        <i class="bi bi-tag"></i> @(string.IsNullOrEmpty(o.ServiceName) ? "—" : o.ServiceName)
+                    </div>
+                    <div class="text-xs text-brand-ink/60 mb-3">
+                        <i class="bi bi-clock"></i> @o.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+                    </div>
+                    <div class="flex gap-2">
+                        @if (!o.IsReplied)
+                        {
+                            <form asp-action="MarkAsReplied" asp-route-id="@o.Id" method="post" class="flex-1">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="w-full py-2 rounded-lg bg-emerald-500 text-white text-xs font-bold">تأكيد الرد</button>
+                            </form>
+                        }
+                        <form asp-action="Delete" asp-route-id="@o.Id" method="post" class="@(o.IsReplied ? "flex-1" : "")"
+                              onsubmit="return confirm('هل تريد حذف هذا الطلب؟');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="w-full py-2 rounded-lg bg-red-50 text-red-600 text-xs font-bold">حذف</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="border-t border-brand-surface">
+            @await Html.PartialAsync("_Pagination", Model)
+        </div>
+    }
+</div>
+
+<!-- Notes modal -->
+<div id="notesModal" class="fixed inset-0 bg-brand-ink/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4" onclick="closeNotes(event)">
+    <div class="bg-white rounded-2xl shadow-card max-w-md w-full p-6" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-extrabold text-brand-ink">ملاحظات <span id="notesCustomer"></span></h3>
+            <button onclick="closeNotes()" class="w-8 h-8 grid place-items-center rounded-lg bg-brand-surface text-brand-ink">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <p id="notesBody" class="text-sm text-brand-ink/80 leading-loose whitespace-pre-line"></p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showNotes(name, body) {
+            document.getElementById('notesCustomer').textContent = name;
+            document.getElementById('notesBody').textContent = body;
+            const m = document.getElementById('notesModal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+        }
+        function closeNotes(e) {
+            if (e && e.target.id !== 'notesModal' && e.type === 'click') return;
+            const m = document.getElementById('notesModal');
+            m.classList.add('hidden'); m.classList.remove('flex');
+        }
+    </script>
+}

@@ -1,0 +1,47 @@
+@model Project
+@{
+    ViewData["Title"] = "حذف المشروع";
+    ViewData["Subtitle"] = Model.Name;
+}
+
+<div class="max-w-xl mx-auto">
+    <a href="/Project/Index" class="inline-flex items-center gap-2 text-sm font-bold text-brand-ink/60 hover:text-brand-ink mb-4">
+        <i class="bi bi-arrow-right"></i> رجوع للمشاريع
+    </a>
+
+    <div class="bg-white rounded-2xl shadow-card overflow-hidden border-t-4 border-red-500">
+        <div class="p-6 lg:p-8 text-center">
+            <div class="w-20 h-20 rounded-2xl bg-red-100 text-red-600 mx-auto flex items-center justify-center mb-4">
+                <i class="bi bi-exclamation-triangle text-3xl"></i>
+            </div>
+            <h2 class="text-xl font-extrabold text-brand-ink">هل أنت متأكد من حذف هذا المشروع؟</h2>
+            <p class="text-sm text-brand-ink/60 mt-1">هذا الإجراء لا يمكن التراجع عنه.</p>
+
+            <div class="mt-6 p-4 rounded-2xl bg-brand-bg text-right flex items-center gap-4">
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <img src="@Model.ImagePath" class="w-16 h-16 rounded-xl object-cover" />
+                }
+                else
+                {
+                    <div class="w-16 h-16 rounded-xl bg-brand-surface flex items-center justify-center text-brand-gold-2">
+                        <i class="bi bi-image text-2xl"></i>
+                    </div>
+                }
+                <div class="flex-1 min-w-0">
+                    <div class="font-bold text-brand-ink truncate">@Model.Name</div>
+                    <div class="text-xs text-brand-ink/60 truncate">@Model.Category</div>
+                </div>
+            </div>
+
+            <form asp-action="Delete" method="post" class="mt-6 flex items-center justify-center gap-3">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <a href="/Project/Index" class="px-5 py-3 rounded-xl bg-brand-surface text-brand-ink font-bold hover:bg-brand-surface/70 transition">إلغاء</a>
+                <button type="submit" class="px-6 py-3 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition shadow">
+                    <i class="bi bi-trash3 me-2"></i> نعم، احذف
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

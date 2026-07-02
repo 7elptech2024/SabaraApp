@@ -1,0 +1,29 @@
+@{
+    var success = TempData["Success"] as string;
+    var error = TempData["Error"] as string;
+}
+@if (!string.IsNullOrEmpty(success) || !string.IsNullOrEmpty(error))
+{
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+        @if (!string.IsNullOrEmpty(success))
+        {
+            <div class="flex items-center gap-3 px-5 py-3 rounded-2xl bg-brand-green text-white shadow-card font-semibold">
+                <i class="bi bi-check-circle-fill text-xl"></i>
+                <span>@success</span>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="flex items-center gap-3 px-5 py-3 rounded-2xl bg-red-500 text-white shadow-card font-semibold">
+                <i class="bi bi-exclamation-triangle-fill text-xl"></i>
+                <span>@error</span>
+            </div>
+        }
+    </div>
+    <script>
+        setTimeout(() => {
+            const t = document.getElementById('toast');
+            if (t) { t.style.transition = 'opacity .5s'; t.style.opacity = 0; setTimeout(() => t.remove(), 500); }
+        }, 3000);
+    </script>
+}

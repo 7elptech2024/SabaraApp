@@ -1,0 +1,87 @@
+@model Project
+@{
+    ViewData["Title"] = "إضافة مشروع جديد";
+    ViewData["Subtitle"] = "أدخل بيانات المشروع لإضافته إلى المعرض";
+}
+
+<div class="max-w-3xl mx-auto">
+    <a href="/Project/Index" class="inline-flex items-center gap-2 text-sm font-bold text-brand-ink/60 hover:text-brand-ink mb-4">
+        <i class="bi bi-arrow-right"></i> رجوع للمشاريع
+    </a>
+
+    <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+        <div class="px-6 py-5 border-b border-brand-surface bg-gradient-to-l from-brand-gold/10 to-transparent">
+            <h2 class="text-xl font-extrabold text-brand-ink flex items-center gap-2">
+                <i class="bi bi-plus-circle-fill text-brand-gold"></i>
+                مشروع جديد
+            </h2>
+        </div>
+
+        <form asp-action="Create" enctype="multipart/form-data" class="p-6 lg:p-8 space-y-5">
+            @Html.AntiForgeryToken()
+
+            <div>
+                <label asp-for="Name" class="block text-sm font-bold text-brand-ink mb-2"></label>
+                <input asp-for="Name"
+                       class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition" />
+                <span asp-validation-for="Name" class="text-red-600 text-xs font-semibold mt-1 block"></span>
+            </div>
+
+            <div>
+                <label asp-for="Category" class="block text-sm font-bold text-brand-ink mb-2"></label>
+                <input asp-for="Category" list="category-options"
+                       placeholder="مثلاً: واجهات المستخدم، تطوير، تصوير، تسويق"
+                       class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition" />
+                <datalist id="category-options">
+                    <option value="واجهات المستخدم"></option>
+                    <option value="تطوير"></option>
+                    <option value="تصوير"></option>
+                    <option value="تسويق"></option>
+                </datalist>
+            </div>
+
+            <div>
+                <label asp-for="Description" class="block text-sm font-bold text-brand-ink mb-2"></label>
+                <textarea asp-for="Description" rows="4"
+                          class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition resize-none"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-brand-ink mb-2">صورة المشروع</label>
+                <label for="imageFile" class="block cursor-pointer rounded-xl border-2 border-dashed border-brand-surface bg-brand-bg hover:bg-brand-surface/40 transition p-6 text-center">
+                    <i class="bi bi-cloud-arrow-up text-3xl text-brand-gold"></i>
+                    <div class="mt-2 text-sm font-bold text-brand-ink">اضغط لرفع صورة</div>
+                    <div class="text-xs text-brand-ink/50">PNG, JPG حتى 5MB</div>
+                    <input id="imageFile" type="file" name="imageFile" accept="image/*" class="hidden" onchange="previewImage(this)" />
+                </label>
+                <div id="imagePreviewWrap" class="hidden mt-4">
+                    <img id="imagePreview" class="rounded-xl max-h-64 mx-auto shadow" />
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-brand-surface">
+                <a href="/Project/Index" class="px-5 py-3 rounded-xl bg-brand-surface text-brand-ink font-bold hover:bg-brand-surface/70 transition">إلغاء</a>
+                <button type="submit" class="px-6 py-3 rounded-xl bg-brand-gold text-brand-ink font-bold hover:bg-yellow-400 transition shadow">
+                    <i class="bi bi-save me-2"></i> حفظ المشروع
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        function previewImage(input) {
+            const wrap = document.getElementById('imagePreviewWrap');
+            const img = document.getElementById('imagePreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { img.src = e.target.result; wrap.classList.remove('hidden'); };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                wrap.classList.add('hidden');
+            }
+        }
+    </script>
+}

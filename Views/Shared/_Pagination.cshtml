@@ -1,0 +1,85 @@
+@model dynamic
+@{
+    int page = (int)Model.Page;
+    int totalPages = (int)Model.TotalPages;
+    int totalItems = (int)Model.TotalItems;
+    int pageSize = (int)Model.PageSize;
+    var routeValues = ViewData["RouteValues"] as Dictionary<string, string?> ?? new Dictionary<string, string?>();
+    string action = ViewData["PaginationAction"] as string ?? "Index";
+    string controller = ViewData["PaginationController"] as string ?? ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+
+    string BuildUrl(int p)
+    {
+        var rv = new Microsoft.AspNetCore.Routing.RouteValueDictionary();
+        foreach (var kv in routeValues)
+        {
+            if (!string.IsNullOrEmpty(kv.Value)) rv[kv.Key] = kv.Value;
+        }
+        rv["page"] = p;
+        return Url.Action(action, controller, rv) ?? "#";
+    }
+
+    int firstShown = totalItems == 0 ? 0 : ((page - 1) * pageSize) + 1;
+    int lastShown  = Math.Min(page * pageSize, totalItems);
+
+    int start = Math.Max(1, page - 2);
+    int end   = Math.Min(totalPages, page + 2);
+}
+
+@if (totalPages > 1 || totalItems > 0)
+{
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-2 py-4">
+        <div class="text-xs text-brand-ink/60">
+            عرض <span class="font-bold text-brand-ink">@firstShown</span>
+            – <span class="font-bold text-brand-ink">@lastShown</span>
+            من <span class="font-bold text-brand-ink">@totalItems</span>
+        </div>
+
+        @if (totalPages > 1)
+        {
+            <nav class="flex items-center gap-1">
+                <a href="@(page > 1 ? BuildUrl(page - 1) : "#")"
+                   class="w-9 h-9 rounded-lg flex items-center justify-center text-sm transition
+                          @(page > 1 ? "bg-white border border-brand-surface text-brand-ink hover:bg-brand-surface" : "bg-brand-surface/40 text-brand-ink/30 pointer-events-none")">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+
+                @if (start > 1)
+                {
+                    <a href="@BuildUrl(1)" class="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold bg-white border border-brand-surface text-brand-ink hover:bg-brand-surface transition">1</a>
+                    if (start > 2)
+                    {
+                        <span class="w-9 h-9 flex items-center justify-center text-brand-ink/40">…</span>
+                    }
+                }
+
+                @for (int p = start; p <= end; p++)
+                {
+                    if (p == page)
+                    {
+                        <span class="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold bg-brand-gold text-white shadow-card">@p</span>
+                    }
+                    else
+                    {
+                        <a href="@BuildUrl(p)" class="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold bg-white border border-brand-surface text-brand-ink hover:bg-brand-surface transition">@p</a>
+                    }
+                }
+
+                @if (end < totalPages)
+                {
+                    if (end < totalPages - 1)
+                    {
+                        <span class="w-9 h-9 flex items-center justify-center text-brand-ink/40">…</span>
+                    }
+                    <a href="@BuildUrl(totalPages)" class="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold bg-white border border-brand-surface text-brand-ink hover:bg-brand-surface transition">@totalPages</a>
+                }
+
+                <a href="@(page < totalPages ? BuildUrl(page + 1) : "#")"
+                   class="w-9 h-9 rounded-lg flex items-center justify-center text-sm transition
+                          @(page < totalPages ? "bg-white border border-brand-surface text-brand-ink hover:bg-brand-surface" : "bg-brand-surface/40 text-brand-ink/30 pointer-events-none")">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </nav>
+        }
+    </div>
+}

@@ -1,0 +1,192 @@
+@model LoginViewModel
+@{
+    Layout = null;
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - صبارة تك</title>
+    <link href="~/assets/img/logo.png" rel="icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@@400;600;700;800&family=Tajawal:wght@@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg:       '#F7FBF8',
+                            surface:  '#E7F1DA',
+                            ink:      '#39321E',
+                            gold:     '#D4B308',
+                            'gold-2': '#B89906',
+                            green:    '#93C231',
+                            'green-2':'#7BAA22',
+                        },
+                    },
+                    fontFamily: { sans: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif'] },
+                    boxShadow: {
+                        card: '0 6px 24px -8px rgba(57,50,30,0.10), 0 2px 6px -2px rgba(57,50,30,0.06)',
+                        glow: '0 0 0 6px rgba(212,179,8,0.15)',
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        html, body { font-family: 'Cairo','Tajawal',system-ui,sans-serif; }
+        .bg-pattern { background-image: radial-gradient(rgba(212,179,8,0.25) 1px, transparent 1px); background-size: 22px 22px; }
+    </style>
+</head>
+<body class="min-h-screen bg-brand-bg text-brand-ink">
+
+    <div class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+
+        <!-- Left: brand panel -->
+        <div class="hidden lg:flex relative bg-gradient-to-br from-brand-ink via-brand-ink to-brand-ink/90 text-white p-12 flex-col justify-between overflow-hidden">
+            <div class="absolute inset-0 bg-pattern opacity-20"></div>
+            <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-brand-gold/20 blur-3xl"></div>
+            <div class="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-brand-green/20 blur-3xl"></div>
+
+            <div class="relative z-10 flex items-center gap-3">
+                <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center">
+                    <img src="~/assets/img/logo.png" alt="صبارة تك" class="w-10 h-10 object-contain">
+                </div>
+                <div>
+                    <div class="text-2xl font-extrabold">صبارة تك</div>
+                    <div class="text-sm text-white/70">لوحة التحكم الإدارية</div>
+                </div>
+            </div>
+
+            <div class="relative z-10">
+                <h1 class="text-4xl xl:text-5xl font-extrabold leading-tight mb-6">
+                    أهلاً بعودتك<br>
+                    <span class="text-brand-gold">إلى لوحة التحكم</span>
+                </h1>
+                <p class="text-white/80 text-lg leading-loose max-w-md">
+                    سجّل دخولك للوصول إلى المشاريع، الطلبات والإحصائيات. كل ما تحتاجه لإدارة عملك في مكان واحد.
+                </p>
+
+                <div class="mt-10 grid grid-cols-3 gap-4 max-w-md">
+                    <div class="bg-white/5 backdrop-blur rounded-2xl p-4 border border-white/10">
+                        <i class="bi bi-briefcase-fill text-brand-gold text-xl"></i>
+                        <div class="text-xs mt-2 text-white/80 font-bold">المشاريع</div>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur rounded-2xl p-4 border border-white/10">
+                        <i class="bi bi-receipt text-brand-green text-xl"></i>
+                        <div class="text-xs mt-2 text-white/80 font-bold">الطلبات</div>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur rounded-2xl p-4 border border-white/10">
+                        <i class="bi bi-graph-up text-brand-gold text-xl"></i>
+                        <div class="text-xs mt-2 text-white/80 font-bold">الإحصاء</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative z-10 text-xs text-white/50">
+                © @DateTime.Now.Year صبارة تك — جميع الحقوق محفوظة
+            </div>
+        </div>
+
+        <!-- Right: form -->
+        <div class="flex items-center justify-center p-6 sm:p-10">
+            <div class="w-full max-w-md">
+
+                <!-- Mobile brand -->
+                <div class="lg:hidden flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 rounded-2xl bg-brand-surface flex items-center justify-center">
+                        <img src="~/assets/img/logo.png" class="w-9 h-9 object-contain" alt="">
+                    </div>
+                    <div>
+                        <div class="text-lg font-extrabold text-brand-ink">صبارة تك</div>
+                        <div class="text-xs text-brand-ink/60">لوحة التحكم</div>
+                    </div>
+                </div>
+
+                <a href="/" class="inline-flex items-center gap-1 text-xs font-bold text-brand-ink/60 hover:text-brand-gold-2 mb-6">
+                    <i class="bi bi-arrow-right"></i> العودة للموقع
+                </a>
+
+                <h2 class="text-3xl font-extrabold text-brand-ink mb-2">تسجيل الدخول</h2>
+                <p class="text-sm text-brand-ink/60 mb-8">أدخل بيانات حسابك للمتابعة إلى لوحة التحكم.</p>
+
+                @if (ViewBag.LoginError != null)
+                {
+                    <div class="flex items-center gap-2 mb-5 p-4 rounded-xl bg-red-50 text-red-700 text-sm font-semibold border border-red-200">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        @ViewBag.LoginError
+                    </div>
+                }
+
+                <form asp-action="Login" asp-controller="Home" method="post" class="space-y-5">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+
+                    <div>
+                        <label asp-for="Email" class="block text-sm font-bold text-brand-ink mb-2">البريد الإلكتروني</label>
+                        <div class="relative">
+                            <i class="bi bi-envelope-fill absolute top-1/2 -translate-y-1/2 right-4 text-brand-ink/40"></i>
+                            <input asp-for="Email" type="email" placeholder="name@example.com"
+                                   class="w-full pr-11 pl-4 py-3.5 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-4 focus:ring-brand-gold/15 outline-none transition text-sm" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-red-600 text-xs font-semibold mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Password" class="block text-sm font-bold text-brand-ink mb-2">كلمة المرور</label>
+                        <div class="relative">
+                            <i class="bi bi-lock-fill absolute top-1/2 -translate-y-1/2 right-4 text-brand-ink/40"></i>
+                            <input asp-for="Password" type="password" id="pw" placeholder="••••••••"
+                                   class="w-full pr-11 pl-12 py-3.5 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-4 focus:ring-brand-gold/15 outline-none transition text-sm" />
+                            <button type="button" onclick="togglePw()" class="absolute top-1/2 -translate-y-1/2 left-3 w-8 h-8 grid place-items-center text-brand-ink/50 hover:text-brand-ink">
+                                <i id="pwIcon" class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" class="text-red-600 text-xs font-semibold mt-1 block"></span>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center gap-2 cursor-pointer text-sm font-semibold text-brand-ink">
+                            <input asp-for="RememberMe" type="checkbox"
+                                   class="w-4 h-4 rounded border-brand-surface text-brand-gold focus:ring-brand-gold/30" />
+                            تذكّرني
+                        </label>
+                        <a href="#" class="text-sm font-bold text-brand-gold-2 hover:underline">نسيت كلمة المرور؟</a>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-3.5 rounded-xl bg-brand-ink text-white font-extrabold text-sm hover:bg-brand-ink/90 transition shadow-card flex items-center justify-center gap-2">
+                        <i class="bi bi-box-arrow-in-left"></i>
+                        تسجيل الدخول
+                    </button>
+                </form>
+
+                <div class="mt-10 pt-6 border-t border-brand-surface text-center text-xs text-brand-ink/50">
+                    صبارة تك — نظام إدارة آمن للوصول السريع.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePw() {
+            const pw = document.getElementById('pw');
+            const icon = document.getElementById('pwIcon');
+            if (pw.type === 'password') { pw.type = 'text'; icon.className = 'bi bi-eye-slash'; }
+            else { pw.type = 'password'; icon.className = 'bi bi-eye'; }
+        }
+    </script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

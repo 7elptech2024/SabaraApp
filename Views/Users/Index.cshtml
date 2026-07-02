@@ -1,0 +1,200 @@
+@model PagedList<UserListItem>
+@{
+    ViewData["Title"] = "المستخدمون";
+    ViewData["Subtitle"] = "إدارة حسابات المسؤولين والموظفين";
+
+    string search = ViewBag.Search as string ?? "";
+    string roleFilter = ViewBag.RoleFilter as string ?? "";
+    int total = (int)(ViewBag.TotalUsers ?? 0);
+    int admins = (int)(ViewBag.AdminCount ?? 0);
+    int employees = (int)(ViewBag.EmployeeCount ?? 0);
+    var roles = ViewBag.Roles as List<string> ?? new List<string>();
+
+    ViewData["PaginationAction"] = "Index";
+    ViewData["PaginationController"] = "Users";
+    ViewData["RouteValues"] = new Dictionary<string, string?>
+    {
+        ["search"] = search,
+        ["role"] = roleFilter,
+    };
+}
+
+@await Html.PartialAsync("_Toast")
+
+<!-- Summary cards -->
+<div class="grid grid-cols-3 gap-3 lg:gap-4 mb-5">
+    <a href="/Users/Index" class="bg-white rounded-2xl p-4 shadow-card hover:shadow-lg transition @(string.IsNullOrEmpty(roleFilter) ? "ring-2 ring-brand-gold" : "")">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-brand-surface text-brand-gold-2 grid place-items-center">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div>
+                <div class="text-xl font-extrabold text-brand-ink">@total</div>
+                <div class="text-[11px] text-brand-ink/60">إجمالي المستخدمين</div>
+            </div>
+        </div>
+    </a>
+    <a href="/Users/Index?role=Admin" class="bg-white rounded-2xl p-4 shadow-card hover:shadow-lg transition @(roleFilter == "Admin" ? "ring-2 ring-brand-gold" : "")">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-brand-gold/15 text-brand-gold-2 grid place-items-center">
+                <i class="bi bi-shield-fill-check"></i>
+            </div>
+            <div>
+                <div class="text-xl font-extrabold text-brand-ink">@admins</div>
+                <div class="text-[11px] text-brand-ink/60">مدراء</div>
+            </div>
+        </div>
+    </a>
+    <a href="/Users/Index?role=Employee" class="bg-white rounded-2xl p-4 shadow-card hover:shadow-lg transition @(roleFilter == "Employee" ? "ring-2 ring-brand-green" : "")">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-brand-green/15 text-brand-green-2 grid place-items-center">
+                <i class="bi bi-person-badge"></i>
+            </div>
+            <div>
+                <div class="text-xl font-extrabold text-brand-ink">@employees</div>
+                <div class="text-[11px] text-brand-ink/60">موظفون</div>
+            </div>
+        </div>
+    </a>
+</div>
+
+<div class="bg-white rounded-2xl shadow-card overflow-hidden">
+    <div class="p-5 lg:p-6 border-b border-brand-surface">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
+            <div>
+                <h2 class="text-xl font-extrabold text-brand-ink flex items-center gap-2">
+                    <i class="bi bi-people-fill text-brand-gold"></i>
+                    قائمة المستخدمين
+                </h2>
+                <p class="text-xs text-brand-ink/60 mt-1">أضف، عدّل أو احذف حسابات الوصول إلى لوحة التحكم</p>
+            </div>
+            <a href="/Users/Create"
+               class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-gold text-brand-ink font-bold hover:bg-yellow-400 transition shadow">
+                <i class="bi bi-person-plus-fill"></i> مستخدم جديد
+            </a>
+        </div>
+
+        <form method="get" class="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <div class="md:col-span-7">
+                <div class="relative">
+                    <i class="bi bi-search absolute top-1/2 -translate-y-1/2 right-4 text-brand-ink/40"></i>
+                    <input type="text" name="search" value="@search"
+                           placeholder="ابحث بالبريد الإلكتروني..."
+                           class="w-full pr-11 pl-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition text-sm" />
+                </div>
+            </div>
+            <div class="md:col-span-3">
+                <select name="role"
+                        class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition text-sm">
+                    <option value="">كل الأدوار</option>
+                    @foreach (var r in roles)
+                    {
+                        <option value="@r" selected="@(r == roleFilter)">@r</option>
+                    }
+                </select>
+            </div>
+            <div class="md:col-span-2 flex gap-2">
+                <button type="submit" class="flex-1 py-3 rounded-xl bg-brand-ink text-white font-bold hover:bg-brand-ink/90 transition text-sm">تصفية</button>
+                <a href="/Users/Index" class="w-12 grid place-items-center rounded-xl bg-brand-surface text-brand-ink hover:bg-brand-surface/70 transition">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.Items.Count == 0)
+    {
+        <div class="text-center py-20">
+            <div class="w-20 h-20 rounded-2xl bg-brand-surface mx-auto flex items-center justify-center mb-4">
+                <i class="bi bi-people text-3xl text-brand-gold-2"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-brand-ink">لا يوجد مستخدمون</h3>
+            <p class="text-sm text-brand-ink/60 mt-1">ابدأ بإضافة أول مستخدم لإدارة النظام</p>
+            <a href="/Users/Create" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-xl bg-brand-gold text-brand-ink font-bold hover:bg-yellow-400 transition">
+                <i class="bi bi-person-plus-fill"></i> مستخدم جديد
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-brand-surface/50 text-brand-ink/70">
+                    <tr>
+                        <th class="text-right font-bold px-5 py-3">المستخدم</th>
+                        <th class="text-right font-bold px-5 py-3">الدور</th>
+                        <th class="text-end font-bold px-5 py-3 w-40">إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-brand-surface">
+                @foreach (var u in Model.Items)
+                {
+                    <tr class="hover:bg-brand-surface/30 transition">
+                        <td class="px-5 py-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-green text-white flex items-center justify-center font-bold">
+                                    @(string.IsNullOrEmpty(u.Email) ? "?" : u.Email.Substring(0,1).ToUpper())
+                                </div>
+                                <div>
+                                    <div class="font-bold text-brand-ink ltr-text" dir="ltr">@u.Email</div>
+                                    @if (u.IsCurrentUser)
+                                    {
+                                        <div class="text-[10px] font-bold text-brand-gold-2">— أنت</div>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-5 py-3">
+                            @if (u.Role == "Admin")
+                            {
+                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-brand-gold/15 text-brand-gold-2">
+                                    <i class="bi bi-shield-fill-check"></i> مدير
+                                </span>
+                            }
+                            else if (u.Role == "Employee")
+                            {
+                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-brand-green/15 text-brand-green-2">
+                                    <i class="bi bi-person-badge"></i> موظف
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-brand-surface text-brand-ink/70">@u.Role</span>
+                            }
+                        </td>
+                        <td class="px-5 py-3">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="/Users/Edit/@u.Id"
+                                   class="w-9 h-9 grid place-items-center rounded-lg bg-brand-gold/15 text-brand-gold-2 hover:bg-brand-gold hover:text-white transition" title="تعديل">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                @if (!u.IsCurrentUser)
+                                {
+                                    <form asp-action="Delete" asp-route-id="@u.Id" method="post"
+                                          onsubmit="return confirm('هل تريد حذف هذا المستخدم؟');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" title="حذف"
+                                                class="w-9 h-9 grid place-items-center rounded-lg bg-red-50 text-red-600 hover:bg-red-500 hover:text-white transition">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="w-9 h-9 grid place-items-center rounded-lg bg-brand-surface/40 text-brand-ink/30" title="لا يمكن حذف حسابك">
+                                        <i class="bi bi-shield-lock"></i>
+                                    </span>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="border-t border-brand-surface">
+            @await Html.PartialAsync("_Pagination", Model)
+        </div>
+    }
+</div>

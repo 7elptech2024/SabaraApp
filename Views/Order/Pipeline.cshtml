@@ -1,0 +1,191 @@
+@model List<Order>
+@using Sabara.Web.ViewModel
+@{
+    ViewData["Title"] = "خط الأنابيب";
+    ViewData["Subtitle"] = "تتبّع رحلة الطلب من جديد إلى صفقة رابحة";
+
+    var stages = new[] { OrderStage.New, OrderStage.Contacted, OrderStage.Proposal, OrderStage.Won, OrderStage.Lost };
+    int total = Model.Count;
+    int wonCount = Model.Count(o => o.Stage == OrderStage.Won);
+    int conversion = total == 0 ? 0 : (int)((wonCount / (double)total) * 100);
+}
+
+@await Html.PartialAsync("_Toast")
+
+<!-- Summary -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+    <div class="bg-white rounded-2xl p-4 shadow-card">
+        <div class="text-[11px] text-brand-ink/60 mb-1">إجمالي الطلبات</div>
+        <div class="text-2xl font-extrabold text-brand-ink">@total</div>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-card">
+        <div class="text-[11px] text-brand-ink/60 mb-1">قيد المتابعة</div>
+        <div class="text-2xl font-extrabold text-amber-600">@Model.Count(o => o.Stage != OrderStage.Won && o.Stage != OrderStage.Lost)</div>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-card">
+        <div class="text-[11px] text-brand-ink/60 mb-1">صفقات رابحة</div>
+        <div class="text-2xl font-extrabold text-emerald-600">@wonCount</div>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-card">
+        <div class="text-[11px] text-brand-ink/60 mb-1">نسبة التحويل</div>
+        <div class="text-2xl font-extrabold text-brand-gold-2">@conversion%</div>
+    </div>
+</div>
+
+<div class="flex items-center justify-between mb-4">
+    <h2 class="text-lg font-extrabold text-brand-ink flex items-center gap-2">
+        <i class="bi bi-kanban-fill text-brand-gold"></i> لوحة المراحل
+    </h2>
+    <div class="flex items-center gap-2">
+        <a href="/Order/Index" class="text-xs font-bold text-brand-gold-2 hover:underline">عرض جدول →</a>
+    </div>
+</div>
+
+<div class="overflow-x-auto pb-4">
+    <div class="flex gap-4 min-w-max">
+        @foreach (var stage in stages)
+        {
+            var items = Model.Where(o => o.Stage == stage).ToList();
+            var (sBg, sTxt, sRing) = stage.StageColors();
+
+            <div class="w-80 flex flex-col bg-white rounded-2xl shadow-card overflow-hidden"
+                 data-stage="@stage" ondragover="onDragOver(event)" ondrop="onDrop(event, '@stage')">
+                <div class="px-4 py-3 border-b border-brand-surface flex items-center justify-between @sBg">
+                    <div class="flex items-center gap-2 @sTxt">
+                        <i class="bi @stage.Icon()"></i>
+                        <span class="font-extrabold text-sm">@stage.Label()</span>
+                    </div>
+                    <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-white @sTxt">@items.Count</span>
+                </div>
+
+                <div class="flex-1 p-3 space-y-3 min-h-[400px] bg-brand-bg/30 column-zone">
+                    @foreach (var o in items)
+                    {
+                        <article draggable="true" ondragstart="onDragStart(event, @o.Id)"
+                                 class="bg-white rounded-xl p-3.5 shadow-sm border border-brand-surface hover:shadow-card hover:border-brand-gold transition cursor-grab active:cursor-grabbing">
+                            <div class="flex items-start justify-between gap-2 mb-2">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-gold to-brand-green text-white flex items-center justify-center font-bold text-xs">
+                                        @(string.IsNullOrEmpty(o.CustomerName) ? "?" : o.CustomerName.Substring(0,1))
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="font-bold text-sm text-brand-ink truncate">@o.CustomerName</div>
+                                        <a href="tel:@o.PhoneNumber" class="text-[11px] text-brand-ink/60 hover:text-brand-gold-2 ltr-text" dir="ltr">@o.PhoneNumber</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown relative">
+                                    <button type="button" onclick="toggleMenu(this)" class="w-7 h-7 grid place-items-center rounded-lg hover:bg-brand-surface text-brand-ink/60">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <div class="hidden absolute left-0 mt-1 w-44 bg-white rounded-xl shadow-card border border-brand-surface z-10 py-1">
+                                        @if (!o.ClientId.HasValue)
+                                        {
+                                            <form asp-action="ConvertToClient" asp-route-id="@o.Id" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="w-full text-right px-3 py-2 text-xs font-semibold hover:bg-brand-surface text-emerald-700">
+                                                    <i class="bi bi-person-plus"></i> تحويل لعميل
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <a href="/Clients/Details/@o.ClientId" class="block px-3 py-2 text-xs font-semibold hover:bg-brand-surface text-brand-gold-2">
+                                                <i class="bi bi-person-circle"></i> فتح ملف العميل
+                                            </a>
+                                        }
+                                        <form asp-action="Delete" asp-route-id="@o.Id" method="post"
+                                              onsubmit="return confirm('حذف هذا الطلب؟');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="w-full text-right px-3 py-2 text-xs font-semibold hover:bg-red-50 text-red-600">
+                                                <i class="bi bi-trash"></i> حذف
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(o.ServiceName))
+                            {
+                                <div class="text-xs text-brand-ink/80 mb-2">
+                                    <i class="bi bi-tag"></i> @o.ServiceName
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(o.Notes))
+                            {
+                                <div class="text-[11px] text-brand-ink/60 bg-brand-bg rounded-lg px-2 py-1.5 mb-2 line-clamp-2">@o.Notes</div>
+                            }
+
+                            <div class="flex items-center justify-between text-[10px] text-brand-ink/50 pt-2 border-t border-brand-surface">
+                                <span><i class="bi bi-clock"></i> @o.CreatedAt.ToString("MM/dd HH:mm")</span>
+                                @if (o.ClientId.HasValue)
+                                {
+                                    <span class="text-emerald-700 font-bold"><i class="bi bi-link-45deg"></i> عميل</span>
+                                }
+                            </div>
+                        </article>
+                    }
+
+                    @if (items.Count == 0)
+                    {
+                        <div class="text-center py-10 text-brand-ink/30 border-2 border-dashed border-brand-surface rounded-xl">
+                            <i class="bi bi-inbox text-2xl"></i>
+                            <p class="text-xs mt-2">لا يوجد طلبات</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+        function onDragStart(e, id) {
+            e.dataTransfer.setData('text/orderId', id);
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        function onDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('ring-2','ring-brand-gold');
+        }
+        document.querySelectorAll('[data-stage]').forEach(col => {
+            col.addEventListener('dragleave', e => e.currentTarget.classList.remove('ring-2','ring-brand-gold'));
+        });
+        async function onDrop(e, stage) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('ring-2','ring-brand-gold');
+            const id = e.dataTransfer.getData('text/orderId');
+            if (!id) return;
+
+            const fd = new FormData();
+            fd.append('id', id);
+            fd.append('stage', stage);
+            fd.append('__RequestVerificationToken', token);
+
+            try {
+                const res = await fetch('/Order/UpdateStage', {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'fetch' },
+                    body: fd,
+                });
+                if (res.ok) location.reload();
+            } catch (err) { console.error(err); }
+        }
+
+        function toggleMenu(btn) {
+            const m = btn.nextElementSibling;
+            document.querySelectorAll('.dropdown > div').forEach(d => d !== m && d.classList.add('hidden'));
+            m.classList.toggle('hidden');
+        }
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown > div').forEach(d => d.classList.add('hidden'));
+            }
+        });
+    </script>
+
+    <!-- Hidden form to expose anti-forgery token -->
+    <form style="display:none">@Html.AntiForgeryToken()</form>
+}

@@ -1,0 +1,42 @@
+@model Client
+@{
+    ViewData["Title"] = "تعديل العميل";
+    ViewData["Subtitle"] = Model.Name;
+}
+
+<div class="max-w-3xl mx-auto">
+    <a href="/Clients/Details/@Model.Id" class="inline-flex items-center gap-2 text-sm font-bold text-brand-ink/60 hover:text-brand-ink mb-4">
+        <i class="bi bi-arrow-right"></i> رجوع لملف العميل
+    </a>
+
+    <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+        <div class="px-6 py-5 border-b border-brand-surface bg-gradient-to-l from-brand-gold/10 to-transparent">
+            <h2 class="text-xl font-extrabold text-brand-ink flex items-center gap-2">
+                <i class="bi bi-pencil-square text-brand-gold"></i>
+                تعديل بيانات العميل
+            </h2>
+        </div>
+
+        <form asp-action="Edit" method="post" class="p-6 lg:p-8 space-y-5">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedAt" />
+            <input type="hidden" asp-for="LastContactAt" />
+
+            <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm font-semibold"></div>
+
+            @await Html.PartialAsync("_Form", Model)
+
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-brand-surface">
+                <a href="/Clients/Index" class="px-5 py-3 rounded-xl bg-brand-surface text-brand-ink font-bold hover:bg-brand-surface/70 transition">إلغاء</a>
+                <button type="submit" class="px-6 py-3 rounded-xl bg-brand-gold text-brand-ink font-bold hover:bg-yellow-400 transition shadow">
+                    <i class="bi bi-check-lg me-2"></i> حفظ التعديلات
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

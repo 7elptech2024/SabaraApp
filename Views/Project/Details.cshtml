@@ -1,0 +1,56 @@
+@model Project
+@{
+    ViewData["Title"] = "تفاصيل المشروع";
+    ViewData["Subtitle"] = Model.Name;
+}
+
+<div class="max-w-5xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <a href="/Project/Index" class="inline-flex items-center gap-2 text-sm font-bold text-brand-ink/60 hover:text-brand-ink">
+            <i class="bi bi-arrow-right"></i> رجوع للمشاريع
+        </a>
+        <div class="flex gap-2">
+            <a href="/Project/Edit/@Model.Id" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-gold text-brand-ink font-bold hover:bg-yellow-400 transition shadow">
+                <i class="bi bi-pencil-square"></i> تعديل
+            </a>
+            <a href="/Project/Delete/@Model.Id" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-500 hover:text-white font-bold transition">
+                <i class="bi bi-trash"></i> حذف
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-5">
+            <div class="lg:col-span-2 bg-brand-bg p-6 flex items-center justify-center">
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <img src="@Model.ImagePath" class="max-h-96 rounded-2xl shadow" alt="@Model.Name" />
+                }
+                else
+                {
+                    <div class="w-full aspect-square max-w-xs bg-brand-surface rounded-2xl flex items-center justify-center text-brand-gold-2">
+                        <i class="bi bi-image text-6xl"></i>
+                    </div>
+                }
+            </div>
+
+            <div class="lg:col-span-3 p-6 lg:p-8">
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-gold/15 text-brand-gold-2 mb-3">
+                    @Model.Category
+                </span>
+                <h1 class="text-2xl lg:text-3xl font-extrabold text-brand-ink mb-3">@Model.Name</h1>
+                <div class="text-sm text-brand-ink/60 mb-6 flex items-center gap-2">
+                    <i class="bi bi-calendar3"></i>
+                    أُضيف في @Model.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold text-brand-ink/60 mb-2 flex items-center gap-2">
+                        <i class="bi bi-card-text"></i> الوصف
+                    </h3>
+                    <p class="text-brand-ink/90 leading-loose whitespace-pre-line">@Model.Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

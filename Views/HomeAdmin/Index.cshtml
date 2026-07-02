@@ -1,0 +1,373 @@
+@model DashboardViewModel
+@using Sabara.Web.ViewModel
+@{
+    ViewData["Title"] = "نظرة عامة";
+    ViewData["Subtitle"] = "ملخّص لحالة الوكالة، العملاء، والمبيعات";
+
+    int maxOrders = Model.OrdersLast7Days.Count == 0 ? 1 : Math.Max(1, Model.OrdersLast7Days.Max(d => d.Count));
+    int maxCategory = Model.ProjectsByCategory.Count == 0 ? 1 : Math.Max(1, Model.ProjectsByCategory.Max(c => c.Count));
+    int maxStage = Model.OrdersByStage.Count == 0 ? 1 : Math.Max(1, Model.OrdersByStage.Max(s => s.Count));
+}
+
+@await Html.PartialAsync("_Toast")
+
+<!-- Hero greeting -->
+<div class="rounded-3xl bg-gradient-to-l from-brand-ink to-brand-ink/90 text-white p-6 lg:p-8 mb-6 lg:mb-8 relative overflow-hidden shadow-card">
+    <div class="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-brand-gold/20 blur-3xl"></div>
+    <div class="absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-brand-green/20 blur-3xl"></div>
+    <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+            <div class="text-sm text-white/70 mb-1">أهلاً بك من جديد</div>
+            <h2 class="text-2xl lg:text-3xl font-extrabold">لوحة تحكم صبارة تك</h2>
+            <p class="mt-2 text-white/80 max-w-xl text-sm lg:text-base">تابع أداء عملك في مكان واحد — مشاريع، طلبات، وإحصائيات حيّة لتتخذ القرار الصحيح.</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="/Project/Create" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-brand-gold text-brand-ink font-bold hover:bg-yellow-400 transition shadow-lg">
+                <i class="bi bi-plus-lg"></i> مشروع جديد
+            </a>
+            <a href="/Order/Index" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold transition">
+                <i class="bi bi-list-check"></i> الطلبات
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- CRM stat cards -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
+
+    <a href="/Clients/Index" class="bg-white rounded-2xl p-5 shadow-card hover:shadow-lg transition group">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-brand-gold/15 text-brand-gold-2 flex items-center justify-center text-xl group-hover:scale-110 transition">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <span class="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-brand-surface text-brand-ink/70">عملاء</span>
+        </div>
+        <div class="text-3xl font-extrabold text-brand-ink">@Model.TotalClients</div>
+        <div class="text-xs text-brand-ink/60 mt-1">@Model.ActiveClients نشط · @Model.LeadClients محتمل</div>
+    </a>
+
+    <a href="/Clients/Index" class="bg-white rounded-2xl p-5 shadow-card hover:shadow-lg transition group">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-brand-green/15 text-brand-green-2 flex items-center justify-center text-xl group-hover:scale-110 transition">
+                <i class="bi bi-person-plus-fill"></i>
+            </div>
+            <span class="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-emerald-50 text-emerald-700">هذا الشهر</span>
+        </div>
+        <div class="text-3xl font-extrabold text-brand-ink">+@Model.ClientsThisMonth</div>
+        <div class="text-xs text-brand-ink/60 mt-1">عملاء جدد</div>
+    </a>
+
+    <a href="/Order/Pipeline" class="bg-white rounded-2xl p-5 shadow-card hover:shadow-lg transition group">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl group-hover:scale-110 transition">
+                <i class="bi bi-trophy-fill"></i>
+            </div>
+            <span class="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-emerald-50 text-emerald-700">صفقات</span>
+        </div>
+        <div class="text-3xl font-extrabold text-brand-ink">@Model.WonOrders</div>
+        <div class="text-xs text-brand-ink/60 mt-1">طلبات تم كسبها</div>
+    </a>
+
+    <a href="/Order/Pipeline" class="bg-white rounded-2xl p-5 shadow-card hover:shadow-lg transition group">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-brand-gold/15 text-brand-gold-2 flex items-center justify-center text-xl group-hover:scale-110 transition">
+                <i class="bi bi-bullseye"></i>
+            </div>
+            <span class="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-brand-gold/15 text-brand-gold-2">معدل التحويل</span>
+        </div>
+        <div class="text-3xl font-extrabold text-brand-ink">@Model.ConversionPercent%</div>
+        <div class="text-xs text-brand-ink/60 mt-1">من الطلبات تتحول لصفقات</div>
+    </a>
+</div>
+
+<!-- Operations stat cards -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
+
+    <div class="bg-white rounded-2xl p-5 shadow-card hover:shadow-lg transition">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-brand-gold/15 text-brand-gold-2 flex items-center justify-center text-xl">
+                <i class="bi bi-briefcase-fill"></i>
+            </div>
+            <span class="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-brand-surface text-brand-ink/70">إجمالي</span>
+        </div>
+        <div class="text-3xl font-extrabold text-brand-ink">@Model.TotalProjects</div>
+        <div class="text-xs text-brand-ink/60 mt-1">مشاريع</div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 shadow-card hover:shadow-lg transition">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-brand-green/15 text-brand-green-2 flex items-center justify-center text-xl">
+                <i class="bi bi-receipt"></i>
+            </div>
+            <span class="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-brand-surface text-brand-ink/70">إجمالي</span>
+        </div>
+        <div class="text-3xl font-extrabold text-brand-ink">@Model.TotalOrders</div>
+        <div class="text-xs text-brand-ink/60 mt-1">طلبات</div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 shadow-card hover:shadow-lg transition">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+            <span class="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-amber-50 text-amber-700">بانتظار الرد</span>
+        </div>
+        <div class="text-3xl font-extrabold text-brand-ink">@Model.PendingOrders</div>
+        <div class="text-xs text-brand-ink/60 mt-1">طلب لم يُردّ عليه</div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-5 shadow-card hover:shadow-lg transition">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl">
+                <i class="bi bi-check-all"></i>
+            </div>
+            <span class="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-emerald-50 text-emerald-700">تم الرد</span>
+        </div>
+        <div class="text-3xl font-extrabold text-brand-ink">@Model.RepliedOrders</div>
+        <div class="text-xs text-brand-ink/60 mt-1">طلب جرى الرد عليه</div>
+    </div>
+</div>
+
+<!-- Pipeline funnel -->
+<div class="bg-white rounded-2xl p-6 shadow-card mb-6 lg:mb-8">
+    <div class="flex items-center justify-between mb-5">
+        <div>
+            <h3 class="text-lg font-extrabold text-brand-ink flex items-center gap-2">
+                <i class="bi bi-funnel-fill text-brand-gold"></i>
+                خط الأنابيب
+            </h3>
+            <p class="text-xs text-brand-ink/60">توزيع الطلبات على مراحل البيع</p>
+        </div>
+        <a href="/Order/Pipeline" class="text-xs font-bold text-brand-gold-2 hover:underline">فتح اللوحة →</a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        @foreach (var stage in new[] { OrderStage.New, OrderStage.Contacted, OrderStage.Proposal, OrderStage.Won, OrderStage.Lost })
+        {
+            var slice = Model.OrdersByStage.FirstOrDefault(x => x.Stage == stage);
+            int count = slice?.Count ?? 0;
+            var (bg, txt, _) = stage.StageColors();
+            int pct = (int)((count / (double)maxStage) * 100);
+
+            <a href="/Order/Pipeline" class="block bg-brand-bg rounded-2xl p-4 hover:bg-brand-surface/50 transition border border-brand-surface">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded-full @bg @txt">
+                        <i class="bi @stage.Icon()"></i>
+                        @stage.Label()
+                    </span>
+                    <span class="text-2xl font-extrabold text-brand-ink">@count</span>
+                </div>
+                <div class="h-2 bg-white rounded-full overflow-hidden">
+                    <div class="h-full rounded-full @bg" style="width:@(pct)%; min-width: @(count > 0 ? "8" : "0")px"></div>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
+<!-- Two columns: 7-day chart + categories -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-6 lg:mb-8">
+
+    <!-- 7-day chart -->
+    <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-card">
+        <div class="flex items-center justify-between mb-5">
+            <div>
+                <h3 class="text-lg font-extrabold text-brand-ink">الطلبات خلال آخر 7 أيام</h3>
+                <p class="text-xs text-brand-ink/60">حركة الطلبات اليومية</p>
+            </div>
+            <div class="text-end">
+                <div class="text-2xl font-extrabold text-brand-ink">@Model.OrdersLast7Days.Sum(d => d.Count)</div>
+                <div class="text-[11px] text-brand-ink/60">طلب</div>
+            </div>
+        </div>
+
+        <div class="flex items-end gap-3 h-48">
+            @foreach (var d in Model.OrdersLast7Days)
+            {
+                var h = (int)((d.Count / (double)maxOrders) * 100);
+                if (h < 4 && d.Count > 0) h = 4;
+                <div class="flex-1 flex flex-col items-center gap-2">
+                    <div class="flex-1 w-full flex items-end">
+                        <div class="w-full rounded-t-lg bg-gradient-to-t from-brand-gold to-brand-green relative group" style="height:@(h)%; min-height: 2px;">
+                            <div class="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-brand-ink text-white text-[11px] font-bold px-2 py-1 rounded">
+                                @d.Count
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-[11px] font-semibold text-brand-ink/60">@d.Label</div>
+                </div>
+            }
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 mt-6 pt-5 border-t border-brand-surface">
+            <div>
+                <div class="text-[11px] text-brand-ink/60">اليوم</div>
+                <div class="text-xl font-extrabold text-brand-ink">@Model.OrdersToday</div>
+            </div>
+            <div>
+                <div class="text-[11px] text-brand-ink/60">هذا الأسبوع</div>
+                <div class="text-xl font-extrabold text-brand-ink">@Model.OrdersThisWeek</div>
+            </div>
+            <div>
+                <div class="text-[11px] text-brand-ink/60">هذا الشهر</div>
+                <div class="text-xl font-extrabold text-brand-ink">@Model.OrdersThisMonth</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="bg-white rounded-2xl p-6 shadow-card">
+        <div class="flex items-center justify-between mb-5">
+            <h3 class="text-lg font-extrabold text-brand-ink">المشاريع حسب الصنف</h3>
+            <i class="bi bi-pie-chart-fill text-xl text-brand-gold"></i>
+        </div>
+
+        @if (Model.ProjectsByCategory.Count == 0)
+        {
+            <div class="text-center py-10 text-brand-ink/50">
+                <i class="bi bi-inboxes text-3xl"></i>
+                <p class="mt-2 text-sm">لا يوجد مشاريع بعد</p>
+            </div>
+        }
+        else
+        {
+            <div class="space-y-4">
+                @foreach (var c in Model.ProjectsByCategory)
+                {
+                    var pct = (int)((c.Count / (double)maxCategory) * 100);
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-sm font-bold text-brand-ink">@c.Category</span>
+                            <span class="text-xs font-bold text-brand-ink/60">@c.Count</span>
+                        </div>
+                        <div class="h-2 bg-brand-surface rounded-full overflow-hidden">
+                            <div class="h-full rounded-full bg-gradient-to-l from-brand-gold to-brand-green" style="width:@(pct)%"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Recent rows -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+
+    <!-- Recent clients -->
+    <div class="bg-white rounded-2xl p-6 shadow-card">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-extrabold text-brand-ink">أحدث العملاء</h3>
+            <a href="/Clients/Index" class="text-xs font-bold text-brand-gold-2 hover:underline">عرض الكل</a>
+        </div>
+        @if (Model.RecentClients.Count == 0)
+        {
+            <div class="text-center py-10 text-brand-ink/50">
+                <i class="bi bi-people text-3xl"></i>
+                <p class="mt-2 text-sm">لا يوجد عملاء بعد</p>
+                <a href="/Clients/Create" class="inline-block mt-3 px-4 py-2 rounded-xl bg-brand-gold text-white text-sm font-bold">إضافة عميل</a>
+            </div>
+        }
+        else
+        {
+            <div class="space-y-2.5">
+                @foreach (var c in Model.RecentClients)
+                {
+                    var (bg, txt) = c.Status.Colors();
+                    <a href="/Clients/Details/@c.Id" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-brand-surface/50 transition">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-green text-white flex items-center justify-center font-bold">
+                            @(string.IsNullOrEmpty(c.Name) ? "?" : c.Name.Substring(0,1))
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-bold text-brand-ink text-sm truncate">@c.Name</div>
+                            <div class="text-xs text-brand-ink/60 truncate">@(c.CompanyName ?? c.PhoneNumber)</div>
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-1 rounded-full @bg @txt whitespace-nowrap">@c.Status.Label()</span>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Recent projects -->
+    <div class="bg-white rounded-2xl p-6 shadow-card">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-extrabold text-brand-ink">أحدث المشاريع</h3>
+            <a href="/Project/Index" class="text-xs font-bold text-brand-gold-2 hover:underline">عرض الكل</a>
+        </div>
+
+        @if (Model.RecentProjects.Count == 0)
+        {
+            <div class="text-center py-10 text-brand-ink/50">
+                <i class="bi bi-folder2-open text-3xl"></i>
+                <p class="mt-2 text-sm">لم تضف أي مشروع بعد</p>
+                <a href="/Project/Create" class="inline-block mt-3 px-4 py-2 rounded-xl bg-brand-gold text-white text-sm font-bold">إضافة مشروع</a>
+            </div>
+        }
+        else
+        {
+            <div class="space-y-3">
+                @foreach (var p in Model.RecentProjects)
+                {
+                    <a href="/Project/Details/@p.Id" class="flex items-center gap-4 p-3 rounded-xl hover:bg-brand-surface/50 transition">
+                        @if (!string.IsNullOrEmpty(p.ImagePath))
+                        {
+                            <img src="@p.ImagePath" class="w-12 h-12 rounded-xl object-cover" alt="@p.Name">
+                        }
+                        else
+                        {
+                            <div class="w-12 h-12 rounded-xl bg-brand-surface flex items-center justify-center text-brand-gold-2">
+                                <i class="bi bi-image text-lg"></i>
+                            </div>
+                        }
+                        <div class="flex-1 min-w-0">
+                            <div class="font-bold text-brand-ink text-sm truncate">@p.Name</div>
+                            <div class="text-xs text-brand-ink/60 truncate">@p.Category</div>
+                        </div>
+                        <div class="text-[11px] text-brand-ink/50">@p.CreatedAt.ToString("yyyy/MM/dd")</div>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Recent orders -->
+    <div class="bg-white rounded-2xl p-6 shadow-card">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-extrabold text-brand-ink">أحدث الطلبات</h3>
+            <a href="/Order/Index" class="text-xs font-bold text-brand-gold-2 hover:underline">عرض الكل</a>
+        </div>
+
+        @if (Model.RecentOrders.Count == 0)
+        {
+            <div class="text-center py-10 text-brand-ink/50">
+                <i class="bi bi-receipt text-3xl"></i>
+                <p class="mt-2 text-sm">لا يوجد طلبات بعد</p>
+            </div>
+        }
+        else
+        {
+            <div class="space-y-3">
+                @foreach (var o in Model.RecentOrders)
+                {
+                    <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-surface/50 transition">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-green text-white flex items-center justify-center font-bold">
+                            @(string.IsNullOrEmpty(o.CustomerName) ? "?" : o.CustomerName.Substring(0,1))
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-bold text-brand-ink text-sm truncate">@o.CustomerName</div>
+                            <div class="text-xs text-brand-ink/60 truncate">@(o.ServiceName ?? "بدون خدمة محددة")</div>
+                        </div>
+                        @if (o.IsReplied)
+                        {
+                            <span class="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-100 text-emerald-700">تم الرد</span>
+                        }
+                        else
+                        {
+                            <span class="text-[10px] font-bold px-2 py-1 rounded-full bg-amber-100 text-amber-700">جديد</span>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

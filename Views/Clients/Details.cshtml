@@ -1,0 +1,177 @@
+@model Client
+@using Sabara.Web.ViewModel
+@{
+    ViewData["Title"] = Model.Name;
+    ViewData["Subtitle"] = string.IsNullOrEmpty(Model.CompanyName) ? "ملف العميل" : Model.CompanyName;
+
+    var (sBg, sTxt) = Model.Status.Colors();
+    var assignedEmail = ViewBag.AssignedUser as string;
+    var orders = Model.Orders.OrderByDescending(o => o.CreatedAt).ToList();
+}
+
+@await Html.PartialAsync("_Toast")
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6">
+
+    <!-- Profile column -->
+    <div class="lg:col-span-1 space-y-4">
+        <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+            <div class="p-6 bg-gradient-to-br from-brand-gold/20 via-brand-surface to-transparent">
+                <div class="flex items-start gap-4">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-gold to-brand-green text-white grid place-items-center font-extrabold text-2xl shadow">
+                        @(string.IsNullOrEmpty(Model.Name) ? "?" : Model.Name.Substring(0,1))
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-lg font-extrabold text-brand-ink">@Model.Name</div>
+                        @if (!string.IsNullOrEmpty(Model.CompanyName))
+                        {
+                            <div class="text-sm text-brand-ink/70"><i class="bi bi-building"></i> @Model.CompanyName</div>
+                        }
+                        <div class="mt-2">
+                            <span class="text-[11px] font-bold px-3 py-1 rounded-full @sBg @sTxt">@Model.Status.Label()</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 space-y-3 text-sm">
+                <div class="flex items-center gap-3">
+                    <i class="bi bi-telephone text-brand-ink/40"></i>
+                    <a href="tel:@Model.PhoneNumber" class="text-brand-ink hover:text-brand-gold-2 ltr-text font-semibold" dir="ltr">@Model.PhoneNumber</a>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.Email))
+                {
+                    <div class="flex items-center gap-3">
+                        <i class="bi bi-envelope text-brand-ink/40"></i>
+                        <a href="mailto:@Model.Email" class="text-brand-ink hover:text-brand-gold-2 ltr-text truncate" dir="ltr">@Model.Email</a>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.City))
+                {
+                    <div class="flex items-center gap-3">
+                        <i class="bi bi-geo-alt text-brand-ink/40"></i>
+                        <span class="text-brand-ink/80">@Model.City</span>
+                    </div>
+                }
+                <div class="flex items-center gap-3">
+                    <i class="bi bi-tag text-brand-ink/40"></i>
+                    <span class="text-brand-ink/80">المصدر: <span class="font-bold">@Model.Source.Label()</span></span>
+                </div>
+                @if (!string.IsNullOrEmpty(assignedEmail))
+                {
+                    <div class="flex items-center gap-3">
+                        <i class="bi bi-person-workspace text-brand-ink/40"></i>
+                        <span class="text-brand-ink/80 ltr-text" dir="ltr">@assignedEmail</span>
+                    </div>
+                }
+                <div class="flex items-center gap-3">
+                    <i class="bi bi-calendar3 text-brand-ink/40"></i>
+                    <span class="text-brand-ink/80">عميل منذ @Model.CreatedAt.ToString("yyyy/MM/dd")</span>
+                </div>
+                @if (Model.LastContactAt.HasValue)
+                {
+                    <div class="flex items-center gap-3">
+                        <i class="bi bi-clock-history text-brand-ink/40"></i>
+                        <span class="text-brand-ink/80">آخر تواصل: @Model.LastContactAt.Value.ToString("yyyy/MM/dd HH:mm")</span>
+                    </div>
+                }
+            </div>
+
+            <div class="px-6 pb-6 grid grid-cols-2 gap-2">
+                <a href="/Clients/Edit/@Model.Id" class="py-2.5 rounded-xl bg-brand-gold/15 text-brand-gold-2 hover:bg-brand-gold hover:text-white transition text-center text-sm font-bold">
+                    <i class="bi bi-pencil"></i> تعديل
+                </a>
+                <form asp-action="UpdateContact" asp-route-id="@Model.Id" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-brand-surface text-brand-ink hover:bg-brand-ink hover:text-white transition text-sm font-bold">
+                        <i class="bi bi-check2-circle"></i> سجّل تواصل
+                    </button>
+                </form>
+            </div>
+
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post"
+                  onsubmit="return confirm('حذف العميل بشكل دائم؟');"
+                  class="border-t border-brand-surface px-6 py-3">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="w-full py-2 rounded-lg text-red-600 hover:bg-red-50 text-xs font-bold transition">
+                    <i class="bi bi-trash"></i> حذف العميل
+                </button>
+            </form>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Notes))
+        {
+            <div class="bg-white rounded-2xl shadow-card p-6">
+                <h3 class="text-sm font-bold text-brand-ink mb-2 flex items-center gap-2">
+                    <i class="bi bi-sticky text-brand-gold"></i> ملاحظات
+                </h3>
+                <p class="text-sm text-brand-ink/80 leading-loose whitespace-pre-line">@Model.Notes</p>
+            </div>
+        }
+    </div>
+
+    <!-- Timeline column -->
+    <div class="lg:col-span-2 space-y-4">
+        <!-- Summary -->
+        <div class="grid grid-cols-3 gap-3">
+            <div class="bg-white rounded-2xl p-4 shadow-card">
+                <div class="text-[11px] text-brand-ink/60 mb-1">إجمالي الطلبات</div>
+                <div class="text-2xl font-extrabold text-brand-ink">@orders.Count</div>
+            </div>
+            <div class="bg-white rounded-2xl p-4 shadow-card">
+                <div class="text-[11px] text-brand-ink/60 mb-1">صفقات رابحة</div>
+                <div class="text-2xl font-extrabold text-emerald-600">@orders.Count(o => o.Stage == OrderStage.Won)</div>
+            </div>
+            <div class="bg-white rounded-2xl p-4 shadow-card">
+                <div class="text-[11px] text-brand-ink/60 mb-1">قيد المتابعة</div>
+                <div class="text-2xl font-extrabold text-amber-600">@orders.Count(o => o.Stage != OrderStage.Won && o.Stage != OrderStage.Lost)</div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+            <div class="px-6 py-5 border-b border-brand-surface flex items-center justify-between">
+                <h3 class="text-lg font-extrabold text-brand-ink flex items-center gap-2">
+                    <i class="bi bi-clock-history text-brand-gold"></i> سجل العميل
+                </h3>
+                <a href="/Order/Pipeline" class="text-xs font-bold text-brand-gold-2 hover:underline">خط الأنابيب →</a>
+            </div>
+
+            @if (orders.Count == 0)
+            {
+                <div class="text-center py-12 text-brand-ink/60">
+                    <i class="bi bi-inbox text-3xl text-brand-ink/30"></i>
+                    <p class="mt-2 text-sm">لا توجد طلبات مرتبطة بهذا العميل بعد</p>
+                </div>
+            }
+            else
+            {
+                <div class="p-6 relative">
+                    <div class="absolute top-6 bottom-6 right-9 w-px bg-brand-surface"></div>
+                    <div class="space-y-5">
+                        @foreach (var o in orders)
+                        {
+                            var (bg, txt, _) = o.Stage.StageColors();
+                            <div class="relative flex gap-4">
+                                <div class="w-7 h-7 rounded-full bg-white border-2 border-brand-gold grid place-items-center text-brand-gold-2 z-10 relative">
+                                    <i class="bi @o.Stage.Icon() text-xs"></i>
+                                </div>
+                                <div class="flex-1 bg-brand-bg rounded-xl p-4 border border-brand-surface">
+                                    <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                        <span class="text-[11px] font-bold px-2.5 py-1 rounded-full @bg @txt">@o.Stage.Label()</span>
+                                        <span class="text-[11px] text-brand-ink/50">@o.CreatedAt.ToString("yyyy/MM/dd HH:mm")</span>
+                                    </div>
+                                    <div class="font-bold text-brand-ink">@(string.IsNullOrEmpty(o.ServiceName) ? "طلب جديد" : o.ServiceName)</div>
+                                    @if (!string.IsNullOrEmpty(o.Notes))
+                                    {
+                                        <p class="text-sm text-brand-ink/70 mt-1">@o.Notes</p>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+@model EditUserViewModel
+@{
+    ViewData["Title"] = "تعديل المستخدم";
+    ViewData["Subtitle"] = Model.Email;
+    var roles = ViewBag.Roles as List<string> ?? new List<string>();
+}
+
+<div class="max-w-2xl mx-auto">
+    <a href="/Users/Index" class="inline-flex items-center gap-2 text-sm font-bold text-brand-ink/60 hover:text-brand-ink mb-4">
+        <i class="bi bi-arrow-right"></i> رجوع للمستخدمين
+    </a>
+
+    <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+        <div class="px-6 py-5 border-b border-brand-surface bg-gradient-to-l from-brand-gold/10 to-transparent">
+            <h2 class="text-xl font-extrabold text-brand-ink flex items-center gap-2">
+                <i class="bi bi-pencil-square text-brand-gold"></i>
+                تعديل المستخدم
+            </h2>
+        </div>
+
+        <form asp-action="Edit" method="post" class="p-6 lg:p-8 space-y-5">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Email" />
+
+            <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm font-semibold"></div>
+
+            <div>
+                <label class="block text-sm font-bold text-brand-ink mb-2">البريد الإلكتروني</label>
+                <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand-surface/50 text-brand-ink/80 ltr-text" dir="ltr">
+                    <i class="bi bi-envelope-fill text-brand-ink/40"></i>
+                    <span class="font-semibold">@Model.Email</span>
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="Role" class="block text-sm font-bold text-brand-ink mb-2"></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    @foreach (var r in roles)
+                    {
+                        <label class="cursor-pointer relative">
+                            <input type="radio" asp-for="Role" value="@r" class="peer sr-only" />
+                            <div class="p-4 rounded-xl border-2 border-brand-surface bg-brand-bg peer-checked:border-brand-gold peer-checked:bg-brand-gold/10 transition">
+                                <div class="flex items-center gap-3">
+                                    @if (r == "Admin")
+                                    {
+                                        <div class="w-10 h-10 rounded-xl bg-brand-gold/15 text-brand-gold-2 grid place-items-center">
+                                            <i class="bi bi-shield-fill-check"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-brand-ink">مدير</div>
+                                            <div class="text-[11px] text-brand-ink/60">صلاحيات كاملة</div>
+                                        </div>
+                                    }
+                                    else if (r == "Employee")
+                                    {
+                                        <div class="w-10 h-10 rounded-xl bg-brand-green/15 text-brand-green-2 grid place-items-center">
+                                            <i class="bi bi-person-badge"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-brand-ink">موظف</div>
+                                            <div class="text-[11px] text-brand-ink/60">بدون إدارة المستخدمين</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="w-10 h-10 rounded-xl bg-brand-surface text-brand-ink/70 grid place-items-center">
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <div class="font-bold text-brand-ink">@r</div>
+                                    }
+                                </div>
+                            </div>
+                        </label>
+                    }
+                </div>
+                <span asp-validation-for="Role" class="text-red-600 text-xs font-semibold mt-1 block"></span>
+            </div>
+
+            <div>
+                <label asp-for="NewPassword" class="block text-sm font-bold text-brand-ink mb-2"></label>
+                <div class="relative">
+                    <i class="bi bi-lock-fill absolute top-1/2 -translate-y-1/2 right-4 text-brand-ink/40"></i>
+                    <input asp-for="NewPassword" type="password" placeholder="اتركه فارغاً للإبقاء على كلمة المرور الحالية"
+                           class="w-full pr-11 pl-4 py-3 rounded-xl bg-brand-bg border border-brand-surface focus:border-brand-gold focus:bg-white focus:ring-2 focus:ring-brand-gold/20 outline-none transition text-sm" />
+                </div>
+                <p class="text-[11px] text-brand-ink/50 mt-1">سيُعاد تعيين كلمة المرور للمستخدم فقط عند إدخال قيمة هنا.</p>
+                <span asp-validation-for="NewPassword" class="text-red-600 text-xs font-semibold mt-1 block"></span>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-brand-surface">
+                <a href="/Users/Index" class="px-5 py-3 rounded-xl bg-brand-surface text-brand-ink font-bold hover:bg-brand-surface/70 transition">إلغاء</a>
+                <button type="submit" class="px-6 py-3 rounded-xl bg-brand-gold text-brand-ink font-bold hover:bg-yellow-400 transition shadow">
+                    <i class="bi bi-check-lg me-2"></i> حفظ التعديلات
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

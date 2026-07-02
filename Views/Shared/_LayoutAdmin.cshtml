@@ -1,0 +1,231 @@
+@{
+    var path = (Context.Request.Path.Value ?? "/").ToLowerInvariant();
+    bool IsActive(string prefix) => path.StartsWith(prefix);
+    string PageTitle = ViewData["Title"] as string ?? "لوحة التحكم";
+    string PageSubtitle = ViewData["Subtitle"] as string ?? "";
+    var userName = User?.Identity?.IsAuthenticated == true ? User.Identity!.Name : "مدير النظام";
+    bool isAdmin = User?.IsInRole("Admin") == true;
+    bool isEmployee = User?.IsInRole("Employee") == true;
+    string roleLabel = isAdmin ? "مدير" : (isEmployee ? "موظف" : "زائر");
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@PageTitle - صبارة تك</title>
+
+    <link href="~/assets/img/logo.png" rel="icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@@400;600;700;800&family=Tajawal:wght@@400;500;700;900&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg:       '#F7FBF8',
+                            surface:  '#E7F1DA',
+                            ink:      '#39321E',
+                            gold:     '#D4B308',
+                            'gold-2': '#B89906',
+                            green:    '#93C231',
+                            'green-2':'#7BAA22',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        card: '0 6px 24px -8px rgba(57,50,30,0.10), 0 2px 6px -2px rgba(57,50,30,0.06)',
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        html, body { font-family: 'Cairo','Tajawal',system-ui,sans-serif; background: #F7FBF8; color: #39321E; }
+        ::selection { background: #D4B308; color: #fff; }
+        .nav-link-active {
+            background: linear-gradient(90deg, rgba(212,179,8,0.18), rgba(147,194,49,0.10));
+            color: #39321E;
+            border-inline-start: 4px solid #D4B308;
+        }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #E7F1DA; border-radius: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #93C231; }
+    </style>
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="min-h-screen">
+
+    <div class="flex min-h-screen">
+
+        <!-- Sidebar -->
+        <aside id="sidebar"
+               class="fixed inset-y-0 right-0 z-40 w-72 bg-white border-l border-brand-surface
+                      transform translate-x-full lg:translate-x-0 transition-transform duration-300
+                      flex flex-col shadow-card">
+            <!-- Brand -->
+            <div class="px-6 py-5 border-b border-brand-surface flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-brand-surface flex items-center justify-center">
+                    <img src="~/assets/img/logo.png" alt="صبارة تك" class="w-9 h-9 object-contain" />
+                </div>
+                <div>
+                    <div class="text-lg font-extrabold text-brand-ink">صبارة تك</div>
+                    <div class="text-xs text-brand-ink/60">لوحة التحكم</div>
+                </div>
+            </div>
+
+            <!-- Nav -->
+            <nav class="flex-1 overflow-y-auto scrollbar-thin px-3 py-4 space-y-1">
+                <div class="px-3 pt-2 pb-1 text-[11px] font-bold tracking-widest text-brand-ink/40">الرئيسية</div>
+
+                <a href="/HomeAdmin/Index"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-ink/80 hover:bg-brand-surface/60 transition @(IsActive("/homeadmin") ? "nav-link-active" : "")">
+                    <i class="bi bi-grid-1x2-fill text-lg"></i>
+                    <span>الرئيسية</span>
+                </a>
+
+                <div class="px-3 pt-4 pb-1 text-[11px] font-bold tracking-widest text-brand-ink/40">العملاء والمبيعات</div>
+
+                <a href="/Clients/Index"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-ink/80 hover:bg-brand-surface/60 transition @(IsActive("/clients") ? "nav-link-active" : "")">
+                    <i class="bi bi-people-fill text-lg"></i>
+                    <span>العملاء</span>
+                </a>
+
+                <a href="/Order/Pipeline"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-ink/80 hover:bg-brand-surface/60 transition @(IsActive("/order/pipeline") ? "nav-link-active" : "")">
+                    <i class="bi bi-kanban-fill text-lg"></i>
+                    <span>خط الأنابيب</span>
+                </a>
+
+                <a href="/Order/Index"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-ink/80 hover:bg-brand-surface/60 transition @((IsActive("/order") && !IsActive("/order/pipeline")) ? "nav-link-active" : "")">
+                    <i class="bi bi-receipt text-lg"></i>
+                    <span>الطلبات</span>
+                </a>
+
+                <div class="px-3 pt-4 pb-1 text-[11px] font-bold tracking-widest text-brand-ink/40">المحتوى</div>
+
+                <a href="/Project/Index"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-ink/80 hover:bg-brand-surface/60 transition @(IsActive("/project") ? "nav-link-active" : "")">
+                    <i class="bi bi-briefcase-fill text-lg"></i>
+                    <span>المشاريع</span>
+                </a>
+
+                @if (isAdmin)
+                {
+                    <div class="px-3 pt-4 pb-1 text-[11px] font-bold tracking-widest text-brand-ink/40">الإدارة</div>
+                    <a href="/Users/Index"
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-ink/80 hover:bg-brand-surface/60 transition @(IsActive("/users") ? "nav-link-active" : "")">
+                        <i class="bi bi-people-fill text-lg"></i>
+                        <span>المستخدمون</span>
+                        <span class="mr-auto text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-gold/15 text-brand-gold-2">مدير فقط</span>
+                    </a>
+                }
+
+                <div class="px-3 pt-4 pb-1 text-[11px] font-bold tracking-widest text-brand-ink/40">روابط سريعة</div>
+                <a href="/" target="_blank"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-ink/80 hover:bg-brand-surface/60 transition">
+                    <i class="bi bi-box-arrow-up-left text-lg"></i>
+                    <span>عرض الموقع</span>
+                </a>
+            </nav>
+
+            <!-- User + Logout -->
+            <div class="border-t border-brand-surface p-4">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-green text-white flex items-center justify-center font-bold">
+                        @((userName ?? "م").Substring(0,1).ToUpper())
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-sm font-bold text-brand-ink truncate" dir="ltr">@userName</div>
+                        <div class="text-[11px] font-bold @(isAdmin ? "text-brand-gold-2" : "text-brand-green-2")">@roleLabel</div>
+                    </div>
+                </div>
+                <form asp-area="" asp-controller="Home" asp-action="Logout" method="post">
+                    <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-brand-ink text-white text-sm font-semibold hover:bg-brand-ink/90 transition">
+                        <i class="bi bi-box-arrow-right"></i>
+                        تسجيل الخروج
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Mobile sidebar overlay -->
+        <div id="sidebarOverlay"
+             class="fixed inset-0 bg-brand-ink/40 backdrop-blur-sm z-30 hidden lg:hidden"
+             onclick="toggleSidebar(false)"></div>
+
+        <!-- Main -->
+        <div class="flex-1 lg:mr-72 min-w-0 flex flex-col">
+
+            <!-- Topbar -->
+            <header class="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-brand-surface">
+                <div class="flex items-center gap-3 px-4 lg:px-8 h-16">
+                    <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 rounded-xl bg-brand-surface text-brand-ink flex items-center justify-center">
+                        <i class="bi bi-list text-xl"></i>
+                    </button>
+
+                    <div class="flex-1 min-w-0">
+                        <h1 class="text-base lg:text-lg font-extrabold text-brand-ink truncate">@PageTitle</h1>
+                        @if (!string.IsNullOrEmpty(PageSubtitle))
+                        {
+                            <p class="text-xs text-brand-ink/60 truncate">@PageSubtitle</p>
+                        }
+                    </div>
+
+                    <div class="hidden md:flex items-center gap-2">
+                        <span class="text-xs text-brand-ink/60">@DateTime.Now.ToString("dddd، dd MMMM yyyy", new System.Globalization.CultureInfo("ar-SA"))</span>
+                    </div>
+
+                    <a href="/" target="_blank"
+                       class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-gold/10 text-brand-gold-2 hover:bg-brand-gold/20 text-sm font-bold transition">
+                        <i class="bi bi-globe2"></i> الموقع
+                    </a>
+                </div>
+            </header>
+
+            <!-- Page -->
+            <main class="flex-1 p-4 lg:p-8">
+                @RenderBody()
+            </main>
+
+            <footer class="px-4 lg:px-8 py-4 text-center text-xs text-brand-ink/50 border-t border-brand-surface bg-white/50">
+                © @DateTime.Now.Year صبارة تك — جميع الحقوق محفوظة
+            </footer>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        function toggleSidebar(force) {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const show = typeof force === 'boolean' ? force : sidebar.classList.contains('translate-x-full');
+            if (show) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
